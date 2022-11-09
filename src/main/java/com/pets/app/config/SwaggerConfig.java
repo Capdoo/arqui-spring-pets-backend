@@ -22,7 +22,7 @@ public class SwaggerConfig implements WebMvcConfigurer {
     //Details for each field
     private ApiInfo apiInfo(){
         return new ApiInfo(
-                "Blog Application",
+                "Pets Application Backend",
                 "Descripcion",
                 "2.0",
                 "Terminos y condiciones",
