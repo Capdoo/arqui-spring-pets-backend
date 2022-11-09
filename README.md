@@ -1,4 +1,4 @@
-# Spring Mascotas Perdidas Backend v1.0
+# Spring Mascotas Perdidas Backend v2.0
 
 Proyecto backend para el Sistema Mascotas Perdidas
 
