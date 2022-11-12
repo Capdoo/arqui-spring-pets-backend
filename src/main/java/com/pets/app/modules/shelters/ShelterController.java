@@ -56,8 +56,8 @@ public class ShelterController {
 	public ResponseEntity<Object> readShelters(){
 		
 		try {
-			List<ShelterDTO> listaRefugios = shelterService.listAll();
-			return new ResponseEntity<Object>(listaRefugios, HttpStatus.OK);
+			List<ShelterDTO> listShelters = shelterService.listAll();
+			return new ResponseEntity<Object>(listShelters, HttpStatus.OK);
 
 		} catch (Exception e) {
 			return new ResponseEntity<Object>(new MensajeDTO("There has been a problem"), HttpStatus.BAD_REQUEST);
@@ -71,8 +71,8 @@ public class ShelterController {
 
 
 		try {
-			ShelterDTO busqueda = shelterService.getById(id);
-			return new ResponseEntity<Object>(busqueda, HttpStatus.OK);
+			ShelterDTO searchs = shelterService.getById(id);
+			return new ResponseEntity<Object>(searchs, HttpStatus.OK);
 
 		} catch (Exception e) {
 			return new ResponseEntity<Object>(new MensajeDTO("There has been a problem"), HttpStatus.BAD_REQUEST);
@@ -87,8 +87,8 @@ public class ShelterController {
 			return new ResponseEntity<Object>(new MensajeDTO("User not found"), HttpStatus.BAD_REQUEST);
 		}
 
-		List<ShelterDTO> listaRefugios = shelterService.getByDniUser(dni);
-		return new ResponseEntity<Object>(listaRefugios, HttpStatus.OK);
+		List<ShelterDTO> listShelters = shelterService.getByDniUser(dni);
+		return new ResponseEntity<Object>(listShelters, HttpStatus.OK);
 	}
 	
 

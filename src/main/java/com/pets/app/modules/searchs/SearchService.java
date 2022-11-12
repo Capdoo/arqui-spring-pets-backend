@@ -46,8 +46,8 @@ public class SearchService {
 			newSearch.setMessage(searchDTO.getMessage());
 			
 				String encoded = fileUploadService.obtenerEncoded(searchDTO.getEncoded());
-				byte[] imagen = fileUploadService.convertStringToBytes(encoded);
-				String url = fileUploadService.fileUpload(imagen);
+				byte[] image = fileUploadService.convertStringToBytes(encoded);
+				String url = fileUploadService.fileUpload(image);
 
 		newSearch.setLinkImg(url);
 			
@@ -55,7 +55,7 @@ public class SearchService {
 		searchRepository.save(newSearch);
 	}
 	
-	//Obtener todos
+	//Get All
 	public List<SearchDTO> listAll(){
 		List<SearchDTO> listSend = new ArrayList<>();
 		List<SearchModel> listDB = searchRepository.findAll();
@@ -99,7 +99,7 @@ public class SearchService {
 		return listSend;
 	}
 	
-	//Obtener por mascota_id
+	//Get pet_id
 	public List<SearchDTO> getSearchByPetId(long petId){
 		List<SearchDTO> sendList = new ArrayList<>();
 		PetModel selectedPet = petRepository.findById(petId).get();
@@ -113,11 +113,11 @@ public class SearchService {
 				singleSearch.setId(p.getId());
 				singleSearch.setAddress(p.getAddress());
 				singleSearch.setDistrict(p.getDistrict());
-						String fechaPerdida = fechaUtil.convertirFecha(p.getLostDate());
-				singleSearch.setLostDate(fechaPerdida);
+						String dateLoss = fechaUtil.convertirFecha(p.getLostDate());
+				singleSearch.setLostDate(dateLoss);
 					
-					String fechaRegistro = fechaUtil.convertirFecha(p.getRegisterDate());
-				singleSearch.setRegisterDate(fechaRegistro);
+					String dateRegistration = fechaUtil.convertirFecha(p.getRegisterDate());
+				singleSearch.setRegisterDate(dateRegistration);
 
 				singleSearch.setPetId(p.getPet().getId());
 				singleSearch.setPhoneA(p.getPhoneA());
@@ -132,32 +132,32 @@ public class SearchService {
 		return sendList;
 	}
 	
-	//Obtener por id
+	//Get id
 	public SearchDTO getSearchById(long id){
 		
 		SearchModel p = searchRepository.findById(id).get();
 		
-		SearchDTO busquedaSingle = new SearchDTO();
+		SearchDTO searchSingle = new SearchDTO();
 			FechaUtil fechaUtil = new FechaUtil();
 
-			busquedaSingle.setId(p.getId());
-			
-			busquedaSingle.setAddress(p.getAddress());
-			busquedaSingle.setDistrict(p.getDistrict());
-				String fechaPerdida = fechaUtil.convertirFecha(p.getLostDate());
-				busquedaSingle.setLostDate(fechaPerdida);
-				
-				String fechaRegistro = fechaUtil.convertirFecha(p.getRegisterDate());
-				busquedaSingle.setRegisterDate(fechaRegistro);
-			busquedaSingle.setPetId(p.getPet().getId());
-			busquedaSingle.setPhoneA(p.getPhoneA());
-			busquedaSingle.setPhoneB(p.getPhoneB());
-			
-			busquedaSingle.setMessage(p.getMessage());
-			
-			busquedaSingle.setUrlLink(p.getLinkImg());
+			searchSingle.setId(p.getId());
 
-		return busquedaSingle;
+			searchSingle.setAddress(p.getAddress());
+			searchSingle.setDistrict(p.getDistrict());
+				String dateLoss = fechaUtil.convertirFecha(p.getLostDate());
+			searchSingle.setLostDate(dateLoss);
+				
+				String dateRegistration = fechaUtil.convertirFecha(p.getRegisterDate());
+			searchSingle.setRegisterDate(dateRegistration);
+			searchSingle.setPetId(p.getPet().getId());
+			searchSingle.setPhoneA(p.getPhoneA());
+			searchSingle.setPhoneB(p.getPhoneB());
+
+			searchSingle.setMessage(p.getMessage());
+
+			searchSingle.setUrlLink(p.getLinkImg());
+
+		return searchSingle;
 	}
 	
 }

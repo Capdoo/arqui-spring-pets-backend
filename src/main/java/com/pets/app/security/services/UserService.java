@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-//Para implementar rollbacks y evitar incoherencia : Concurrencia
+//To implement rollbacks and avoid inconsistency: Concurrency
 @Transactional
 public class UserService {
 
@@ -27,7 +27,7 @@ public class UserService {
 	@Autowired
 	ModelDTOService modelDTOService;
 	
-	//Obtener
+	//Get
 	public List<UserDTO> listar(){
 		List<UserDTO> listaEnviar = new ArrayList<>();
 

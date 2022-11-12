@@ -64,15 +64,15 @@ public class PetService {
 		newPet.setShelter(null);
 		
 				String encoded = fileUploadService.obtenerEncoded(petDTO.getEncoded());
-				byte[] imagen = fileUploadService.convertStringToBytes(encoded);
-				String url = fileUploadService.fileUpload(imagen);
+				byte[] image = fileUploadService.convertStringToBytes(encoded);
+				String url = fileUploadService.fileUpload(image);
 
 		newPet.setLinkImg(url);
 			
 		petRepository.save(newPet);
 	}
 	
-	//Lista general
+	//List general
 	public List<PetDTO> listAllPets(){
 		List<PetDTO> listPets = new ArrayList<>();
 		List<PetModel> listDB = petRepository.findAll();
@@ -80,37 +80,37 @@ public class PetService {
 		for(PetModel p : listDB) {
 			FechaUtil fechaUtil = new FechaUtil();
 			StringUtil stringUtil = new StringUtil();
-			PetDTO mascotaSingle = new PetDTO();
+			PetDTO petSingle = new PetDTO();
 
-				mascotaSingle.setId(p.getId());
-			   	mascotaSingle.setName(p.getName());
-				mascotaSingle.setGender(p.getGender());
+				petSingle.setId(p.getId());
+				petSingle.setName(p.getName());
+				petSingle.setGender(p.getGender());
 				
-		   			String fechaNacimiento = fechaUtil.convertirFecha(p.getBirthDate());
-		   			mascotaSingle.setBirthDate(fechaNacimiento);
+		   			String dateNacimiento = fechaUtil.convertirFecha(p.getBirthDate());
+					petSingle.setBirthDate(dateNacimiento);
 				
-			   		String fechaRegistro = fechaUtil.convertirFecha(p.getBirthDate());
-					mascotaSingle.setBirthDate(fechaRegistro);
-					
-				mascotaSingle.setColour(p.getColour());
-				mascotaSingle.setCharacteristic(p.getCharacteristic());
-				mascotaSingle.setSize(p.getSize());
-				mascotaSingle.setIdOwner(p.getOwner().getId());
+			   		String dateRegistro = fechaUtil.convertirFecha(p.getBirthDate());
+					petSingle.setBirthDate(dateRegistro);
+
+				petSingle.setColour(p.getColour());
+				petSingle.setCharacteristic(p.getCharacteristic());
+				petSingle.setSize(p.getSize());
+				petSingle.setIdOwner(p.getOwner().getId());
 
 				if(p.getSpecificBreed()==null) {
-					mascotaSingle.setSpecies(p.getDetail().getSpecies());
-					mascotaSingle.setBreed(p.getDetail().getBreed());
-					mascotaSingle.setSpecificBreed(null);
-					mascotaSingle.setIdDetail(p.getDetail().getId());
+					petSingle.setSpecies(p.getDetail().getSpecies());
+					petSingle.setBreed(p.getDetail().getBreed());
+					petSingle.setSpecificBreed(null);
+					petSingle.setIdDetail(p.getDetail().getId());
 				}else {
-					mascotaSingle.setSpecies(stringUtil.obtenerEspecieToken(p.getSpecificBreed()));
-					mascotaSingle.setBreed(null);
-					mascotaSingle.setSpecificBreed(stringUtil.obtenerRazaToken(p.getSpecificBreed()));
+					petSingle.setSpecies(stringUtil.obtenerEspecieToken(p.getSpecificBreed()));
+					petSingle.setBreed(null);
+					petSingle.setSpecificBreed(stringUtil.obtenerRazaToken(p.getSpecificBreed()));
 				}
-				
-				mascotaSingle.setUrlLink(p.getLinkImg());
 
-			listPets.add(mascotaSingle);
+				petSingle.setUrlLink(p.getLinkImg());
+
+			listPets.add(petSingle);
 		}
 		
 		return listPets;

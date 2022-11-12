@@ -26,54 +26,54 @@ public class OwnerService {
 	
 	public void saveOwner(OwnerDTO ownerDTO) {
 		
-		//Obteniendo al Usuario
+		//Getting the User
 		int user_id = (int) ownerDTO.getUser_id();
-		UserModel usuarioObtenido = usuarioRepository.findById(user_id).get();
+		UserModel userObtained = usuarioRepository.findById(user_id).get();
 		
-		OwnerModel dueñoModel = new OwnerModel();
-			dueñoModel.setRegisterDate(new Timestamp(System.currentTimeMillis()));
-			dueñoModel.setHistorial_id(ownerDTO.getHistorial_id());
-			dueñoModel.setNumberOfPets(ownerDTO.getNumberOfPets());
-			dueñoModel.setRate(ownerDTO.getRate());
-			dueñoModel.setUser(usuarioObtenido);
+		OwnerModel OwnerModel = new OwnerModel();
+			OwnerModel.setRegisterDate(new Timestamp(System.currentTimeMillis()));
+			OwnerModel.setHistorial_id(ownerDTO.getHistorial_id());
+			OwnerModel.setNumberOfPets(ownerDTO.getNumberOfPets());
+			OwnerModel.setRate(ownerDTO.getRate());
+			OwnerModel.setUser(userObtained);
 			
-		ownerRepository.save(dueñoModel);
+		ownerRepository.save(OwnerModel);
 	}
 	
 	public List<OwnerDTO> listAll(){
 		List<OwnerDTO> sendList = new ArrayList<>();
 		
-		//Traer los datos
-		List<OwnerModel> listaModelsBD = ownerRepository.findAll();
+		//fetch the data
+		List<OwnerModel> listModelsBD = ownerRepository.findAll();
 
-		for(OwnerModel p : listaModelsBD) {
+		for(OwnerModel p : listModelsBD) {
 			FechaUtil fechaUtil = new FechaUtil();
-			OwnerDTO duenoSingle = new OwnerDTO();
-			String fechaRegistro = fechaUtil.convertirFecha(p.getRegisterDate());
-			
-				duenoSingle.setId(p.getId());
-				duenoSingle.setRegisterDate(fechaRegistro);
-				duenoSingle.setHistorial_id(p.getHistorial_id());
-				duenoSingle.setNumberOfPets(p.getNumberOfPets());
-				duenoSingle.setRate(p.getRate());
-				duenoSingle.setUser_id(p.getUser().getId());
+			OwnerDTO ownerSingle = new OwnerDTO();
+			String dateRegistration = fechaUtil.convertirFecha(p.getRegisterDate());
 
-			sendList.add(duenoSingle);
+				ownerSingle.setId(p.getId());
+				ownerSingle.setRegisterDate(dateRegistration);
+				ownerSingle.setHistorial_id(p.getHistorial_id());
+				ownerSingle.setNumberOfPets(p.getNumberOfPets());
+				ownerSingle.setRate(p.getRate());
+				ownerSingle.setUser_id(p.getUser().getId());
+
+			sendList.add(ownerSingle);
 		}
 		
 		return sendList;
 	}
 	
-	//Util
-	public boolean existsOwnerByUserId(long idUsuario) {
+	//Useful
+	public boolean existsOwnerByUserId(long idUser) {
 		boolean res = false;
 		
-		if(userService.existsPorId(idUsuario)) {
-			UserModel usuario = usuarioRepository.findById(idUsuario).get();
+		if(userService.existsPorId(idUser)) {
+			UserModel user = usuarioRepository.findById(idUser).get();
 			
-			Optional<OwnerModel> duenoSupuesto = ownerRepository.findByUser(usuario);
+			Optional<OwnerModel> ownerSupposed = ownerRepository.findByUser(user);
 			
-			if(duenoSupuesto.isPresent()) {
+			if(ownerSupposed.isPresent()) {
 				res = true;
 			}
 		}

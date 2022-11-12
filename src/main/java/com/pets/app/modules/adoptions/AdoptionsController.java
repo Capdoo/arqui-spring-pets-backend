@@ -33,11 +33,11 @@ public class AdoptionsController {
 	public ResponseEntity<Object> readAdoptions(){
 		
 		try {
-			List<AdoptionDTO> listaAdopciones = adopcionService.listAllAdoptions();
-			return new ResponseEntity<Object>(listaAdopciones, HttpStatus.OK);
+			List<AdoptionDTO> listAdoptions = adopcionService.listAllAdoptions();
+			return new ResponseEntity<Object>(listAdoptions, HttpStatus.OK);
 
 		} catch (Exception e) {
-			return new ResponseEntity<Object>(new MensajeDTO("Hubo un problema"), HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<Object>(new MensajeDTO("There was a problem"), HttpStatus.BAD_REQUEST);
 		}
 		
 	}
@@ -46,11 +46,11 @@ public class AdoptionsController {
 	public ResponseEntity<Object> obtenerPorMascotaId(@RequestParam long id){
 		
 		try {
-			List<AdoptionDTO> listaAdopciones = adopcionService.getByPetId(id);
-			return new ResponseEntity<Object>(listaAdopciones, HttpStatus.OK);
+			List<AdoptionDTO> listAdoptions = adopcionService.getByPetId(id);
+			return new ResponseEntity<Object>(listAdoptions, HttpStatus.OK);
 
 		} catch (Exception e) {
-			return new ResponseEntity<Object>(new MensajeDTO("Hubo un problema"), HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<Object>(new MensajeDTO("There was a problem"), HttpStatus.BAD_REQUEST);
 		}
 	}
 	
@@ -58,11 +58,11 @@ public class AdoptionsController {
 	public ResponseEntity<Object> readByUd(@RequestParam long id){
 		
 		try {
-			AdoptionDTO adopcion = adopcionService.getById(id);
-			return new ResponseEntity<Object>(adopcion, HttpStatus.OK);
+			AdoptionDTO adoption = adopcionService.getById(id);
+			return new ResponseEntity<Object>(adoption, HttpStatus.OK);
 
 		} catch (Exception e) {
-			return new ResponseEntity<Object>(new MensajeDTO("Hubo un problema"), HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<Object>(new MensajeDTO("There was a problem"), HttpStatus.BAD_REQUEST);
 		}
 		
 	}

@@ -45,11 +45,11 @@ public class OwnerControllers {
 	}
 	
 	@GetMapping("/read")
-	public ResponseEntity<Object> obtener(){
+	public ResponseEntity<Object> get(){
 		
 		try {
-			List<OwnerDTO> listaDuenos = ownerService.listAll();
-			return new ResponseEntity<Object>(listaDuenos, HttpStatus.OK);
+			List<OwnerDTO> listsOwner = ownerService.listAll();
+			return new ResponseEntity<Object>(listsOwner, HttpStatus.OK);
 
 		} catch (Exception e) {
 			return new ResponseEntity<Object>(new MensajeDTO("There has been a problem"), HttpStatus.BAD_REQUEST);

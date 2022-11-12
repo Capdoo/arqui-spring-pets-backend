@@ -34,8 +34,8 @@ public class SearchsController {
 	public ResponseEntity<Object> readSearchs(){
 		
 		try {
-			List<SearchDTO> listaBusquedas = searchService.listAll();
-			return new ResponseEntity<Object>(listaBusquedas, HttpStatus.OK);
+			List<SearchDTO> listSearchs = searchService.listAll();
+			return new ResponseEntity<Object>(listSearchs, HttpStatus.OK);
 
 		} catch (Exception e) {
 			return new ResponseEntity<Object>(new MensajeDTO("There has been a problem"), HttpStatus.BAD_REQUEST);
@@ -47,8 +47,8 @@ public class SearchsController {
 	public ResponseEntity<Object> readById(@RequestParam long id){
 
 		try {
-			SearchDTO busqueda = searchService.getSearchById(id);
-			return new ResponseEntity<Object>(busqueda, HttpStatus.OK);
+			SearchDTO searchs = searchService.getSearchById(id);
+			return new ResponseEntity<Object>(searchs, HttpStatus.OK);
 
 		} catch (Exception e) {
 			return new ResponseEntity<Object>(new MensajeDTO("There has been a problem"), HttpStatus.BAD_REQUEST);
@@ -60,8 +60,8 @@ public class SearchsController {
 	public ResponseEntity<Object> readByPetId(@RequestParam long id){
 		
 		try {
-			List<SearchDTO> listaBusquedas = searchService.getSearchByPetId(id);
-			return new ResponseEntity<Object>(listaBusquedas, HttpStatus.OK);
+			List<SearchDTO> listSearchs = searchService.getSearchByPetId(id);
+			return new ResponseEntity<Object>(listSearchs, HttpStatus.OK);
 
 		} catch (Exception e) {
 			return new ResponseEntity<Object>(new MensajeDTO("There has been a problem"), HttpStatus.BAD_REQUEST);

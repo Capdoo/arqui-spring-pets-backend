@@ -46,13 +46,13 @@ public class AdoptionService {
 		adoptionRepository.save(newAdoption);
 	}
 	
-	//Obtener todos
+	//Get all
 	public List<AdoptionDTO> listAllAdoptions(){
 		List<AdoptionDTO> sendList = new ArrayList<>();
-		List<AdoptionModel> listaBD = adoptionRepository.findAll();
+		List<AdoptionModel> listBD = adoptionRepository.findAll();
 
 		
-		for(AdoptionModel p : listaBD) {
+		for(AdoptionModel p : listBD) {
 			FechaUtil fechaUtil = new FechaUtil();
 			AdoptionDTO singleAdoption = new AdoptionDTO();
 
@@ -78,65 +78,65 @@ public class AdoptionService {
 		return sendList;
 	}
 	
-	//Obtener por mascota_id
-	public List<AdoptionDTO> getByPetId(long mascotaId){
+	//get pet_id
+	public List<AdoptionDTO> getByPetId(long petId){
 		List<AdoptionDTO> sendList = new ArrayList<>();
-		PetModel mascotaSeleccionada = petRepository.findById(mascotaId).get();
+		PetModel petselected = petRepository.findById(petId).get();
 		
-		List<AdoptionModel> listaBD = adoptionRepository.findAllByPet(mascotaSeleccionada);
+		List<AdoptionModel> listBD = adoptionRepository.findAllByPet(petselected);
 		
-		for(AdoptionModel p : listaBD) {
-			AdoptionDTO adopcionSingle = new AdoptionDTO();
+		for(AdoptionModel p : listBD) {
+			AdoptionDTO adoptionSingle = new AdoptionDTO();
 			FechaUtil fechaUtil = new FechaUtil();
 
-				adopcionSingle.setId(p.getId());
+				adoptionSingle.setId(p.getId());
 				
-				adopcionSingle.setAddress(p.getAddress());
-				adopcionSingle.setDistrict(p.getDistrict());
+				adoptionSingle.setAddress(p.getAddress());
+				adoptionSingle.setDistrict(p.getDistrict());
 
 					
 					String registerDate = fechaUtil.convertirFecha(p.getRegisterDate());
-					adopcionSingle.setRegisterDate(registerDate);
+					adoptionSingle.setRegisterDate(registerDate);
 					
-				adopcionSingle.setPet_id(p.getPet().getId());
-				adopcionSingle.setPhoneA(p.getPhoneA());
+				adoptionSingle.setPet_id(p.getPet().getId());
+				adoptionSingle.setPhoneA(p.getPhoneA());
 				
-				adopcionSingle.setPhoneB(p.getPhoneB());
-				adopcionSingle.setMessage(p.getMessage());
+				adoptionSingle.setPhoneB(p.getPhoneB());
+				adoptionSingle.setMessage(p.getMessage());
 				
-				adopcionSingle.setObservation(p.getObservation());
-			sendList.add(adopcionSingle);
+				adoptionSingle.setObservation(p.getObservation());
+			sendList.add(adoptionSingle);
 			
 		}
 		return sendList;
 	}
 	
-	//Obtener por id
+	//get id
 	public AdoptionDTO getById(long id){
 		
 		AdoptionModel p = adoptionRepository.findById(id).get();
 
-		AdoptionDTO adopcionSingle = new AdoptionDTO();
+		AdoptionDTO adoptionSingle = new AdoptionDTO();
 		FechaUtil fechaUtil = new FechaUtil();
 
-			adopcionSingle.setId(p.getId());
+			adoptionSingle.setId(p.getId());
 			
-			adopcionSingle.setAddress(p.getAddress());
-			adopcionSingle.setDistrict(p.getDistrict());
+			adoptionSingle.setAddress(p.getAddress());
+			adoptionSingle.setDistrict(p.getDistrict());
 
 				
 				String fechaRegistro = fechaUtil.convertirFecha(p.getRegisterDate());
-				adopcionSingle.setRegisterDate(fechaRegistro);
+				adoptionSingle.setRegisterDate(fechaRegistro);
 				
-			adopcionSingle.setPet_id(p.getPet().getId());
-			adopcionSingle.setPhoneA(p.getPhoneA());
+			adoptionSingle.setPet_id(p.getPet().getId());
+			adoptionSingle.setPhoneA(p.getPhoneA());
 			
-			adopcionSingle.setPhoneB(p.getPhoneB());
-			adopcionSingle.setMessage(p.getMessage());
+			adoptionSingle.setPhoneB(p.getPhoneB());
+			adoptionSingle.setMessage(p.getMessage());
 			
-			adopcionSingle.setObservation(p.getObservation());
+			adoptionSingle.setObservation(p.getObservation());
 
-		return adopcionSingle;
+		return adoptionSingle;
 	}
 
 	public boolean existsAdoptionByPet(PetModel petModel){

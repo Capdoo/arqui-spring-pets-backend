@@ -8,10 +8,10 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-//Convierte la clase Usuario en Usuario Principal.
-//Media entre la clase Usuario y Usuario Principal.
-//Es la clase de SpringSecurity especifica
-//Para obtener los datos del usuario y sus privilegios
+//Converts the User class to the Main User.
+//Average between the User class and the Main User.
+//Is the SpringSecurity class specified
+//To obtain the user data and its privileges
 
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService{
