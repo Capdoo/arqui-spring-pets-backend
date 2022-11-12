@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import springfox.documentation.annotations.ApiIgnore;
 
 import java.util.List;
 
@@ -22,6 +23,7 @@ public class ShelterController {
 	@Autowired
 	UserService userService;
 
+	@ApiIgnore
 	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
 	@PostMapping("/create")
 	public ResponseEntity<Object> createShelter(@RequestBody ShelterDTO shelterDTO){
@@ -36,6 +38,7 @@ public class ShelterController {
 		
 	}
 
+	@ApiIgnore
 	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
 	@PostMapping("/create/partner")
 	//TO DO
@@ -51,7 +54,7 @@ public class ShelterController {
 
 	}
 
-	
+	@ApiIgnore
 	@GetMapping("/read")
 	public ResponseEntity<Object> readShelters(){
 		
@@ -66,6 +69,7 @@ public class ShelterController {
 	}
 
 
+	@ApiIgnore
 	@GetMapping("/read/single")
 	public ResponseEntity<Object> readById(@RequestParam long id){
 
@@ -80,6 +84,7 @@ public class ShelterController {
 
 	}
 
+	@ApiIgnore
 	@GetMapping("/read/user")
 	public ResponseEntity<Object> readByDniUser(@RequestParam String dni){
 
