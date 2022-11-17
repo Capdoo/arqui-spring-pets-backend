@@ -18,7 +18,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -34,19 +33,14 @@ public class AuthController {
 
 	@Autowired
 	PasswordEncoder passwordEncoder;
-	
 	@Autowired
 	AuthenticationManager authenticationManager;
-	
 	@Autowired
 	UserService userService;
-	
 	@Autowired
 	RoleService roleService;
-	
 	@Autowired
 	JwtProvider jwtProvider;
-	
 	@Autowired
 	FileUploadService fileUploadService;
 	
@@ -119,8 +113,7 @@ public class AuthController {
 			Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
 	        SecurityContextHolder.getContext().setAuthentication(authentication);
 	        String jwt = jwtProvider.generateToken(authentication);
-	        UserDetails userDetails = (UserDetails)authentication.getPrincipal(); 
-	        JwtDTO jwtDto = new JwtDTO(jwt, userDetails.getUsername(), userDetails.getAuthorities());
+	        JwtDTO jwtDto = new JwtDTO(jwt);
 	        return new ResponseEntity(jwtDto, HttpStatus.OK);
 			
 		} catch (Exception e) {
