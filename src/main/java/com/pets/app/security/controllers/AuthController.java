@@ -23,6 +23,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -121,7 +122,17 @@ public class AuthController {
 		}
 
 	}
-	
+	@PostMapping("/refresh")
+	public ResponseEntity<Object> refreshToken(@RequestBody JwtDTO jwtDTO) throws ParseException {
+		try {
+			String token = jwtProvider.refreshToken(jwtDTO);
+			JwtDTO jwt = new JwtDTO(token);
+			return new ResponseEntity<Object>(jwt, HttpStatus.OK);
+
+		}catch (Exception e){
+			return new ResponseEntity<Object>(new MensajeDTO(e.getMessage()), HttpStatus.OK);
+		}
+	}
 }
 
 

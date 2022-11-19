@@ -68,6 +68,8 @@ public class MainSecurity extends WebSecurityConfigurerAdapter{
 			.antMatchers("/refugios/**").permitAll()
 			.antMatchers("/adopciones/**").permitAll()
 			.antMatchers("/files/**").permitAll()
+				.antMatchers("/error").permitAll()
+
 			//SwaggerDoc
 			.antMatchers(
 					"/auth/**",
@@ -86,7 +88,7 @@ public class MainSecurity extends WebSecurityConfigurerAdapter{
 		http.addFilterBefore(jwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
 	}
 
-	
+
 	
 }
 
