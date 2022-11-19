@@ -58,9 +58,7 @@ Hacer build
 
 ## Authors
 
-Contribuidores y enlaces
-
-. [@Capdoo](https://github.com/Capdoo)
+Contribuidores 
 
 
 ## License
