@@ -10,7 +10,6 @@ import org.springframework.stereotype.Component;
 //@Component
 public class CreateRoles implements CommandLineRunner{
 
-	
 	@Autowired
 	RoleService roleService;
 	

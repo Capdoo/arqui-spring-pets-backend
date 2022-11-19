@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import springfox.documentation.annotations.ApiIgnore;
 
 import java.util.List;
 
@@ -15,7 +16,8 @@ public class AdoptionsController {
 
 	@Autowired
 	AdoptionService adopcionService;
-	
+
+	@ApiIgnore
 	@PostMapping("/create")
 	public ResponseEntity<Object> createAdoption(@RequestBody AdoptionDTO adoptionDTO){
 		
@@ -28,7 +30,8 @@ public class AdoptionsController {
 		}
 		
 	}
-	
+
+	@ApiIgnore
 	@GetMapping("/read")
 	public ResponseEntity<Object> readAdoptions(){
 		
@@ -41,7 +44,8 @@ public class AdoptionsController {
 		}
 		
 	}
-	
+
+	@ApiIgnore
 	@GetMapping("/read/pet")
 	public ResponseEntity<Object> obtenerPorMascotaId(@RequestParam long id){
 		
@@ -53,7 +57,8 @@ public class AdoptionsController {
 			return new ResponseEntity<Object>(new MensajeDTO("There was a problem"), HttpStatus.BAD_REQUEST);
 		}
 	}
-	
+
+	@ApiIgnore
 	@GetMapping("/read/single")
 	public ResponseEntity<Object> readByUd(@RequestParam long id){
 		
