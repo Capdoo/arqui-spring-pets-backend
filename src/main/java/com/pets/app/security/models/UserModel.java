@@ -1,13 +1,11 @@
 package com.pets.app.security.models;
 
-
 import com.pets.app.modules.owners.OwnerModel;
 import com.pets.app.modules.shelters.ShelterModel;
 
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
-
 
 @Entity
 @Table(name="users")

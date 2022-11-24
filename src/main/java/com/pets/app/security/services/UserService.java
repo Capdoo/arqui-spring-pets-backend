@@ -20,10 +20,8 @@ public class UserService {
 
 	@Autowired
 	UserRepository userRepository;
-	
 	@Autowired
 	OwnerRepository ownerRepository;
-
 	@Autowired
 	ModelDTOService modelDTOService;
 	
@@ -62,10 +60,15 @@ public class UserService {
 	}
 	
 	//Seguridad
-	public Optional<UserModel> getByNombreUsuario(String nombreUsuario){
+	public Optional<UserModel> getByUsername(String nombreUsuario){
 		return userRepository.findByUsername(nombreUsuario);
 	}
-	
+	public Optional<UserModel> getByUsernameOrEmail(String usernameOrEmail){
+		return userRepository.findByUsernameOrEmail(usernameOrEmail, usernameOrEmail);
+	}
+	public Optional<UserModel> getByTokenPassword(String tokenPassword){
+		return userRepository.findByTokenPassword(tokenPassword);
+	}
 	public boolean existsByNombreUsuario(String nombreUsuario) {
 		return userRepository.existsByUsername(nombreUsuario);
 	}
@@ -79,7 +82,10 @@ public class UserService {
 	}
 
 	public boolean existsByDni(String dni){ return userRepository.existsByDni(dni);}
+	public boolean existsByUsernameOrEmail(String usernameOrEmail) {
 
+		return userRepository.existsByUsernameOrEmail(usernameOrEmail, usernameOrEmail);
+	}
 	public void save(UserModel usuarioModel) {
 		userRepository.save(usuarioModel);
 	}
