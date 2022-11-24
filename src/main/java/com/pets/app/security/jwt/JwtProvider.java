@@ -26,14 +26,11 @@ import java.util.stream.Collectors;
 @Component
 public class JwtProvider {
 
-	private final static Logger logger = LoggerFactory.getLogger(JwtProvider.class); 
-
+	private final static Logger logger = LoggerFactory.getLogger(JwtProvider.class);
 	@Value("${jwt.secret}")
 	private String secret;
-
 	@Value("${jwt.expiration}")
 	private int expiration;
-	
 	@Autowired
 	UserService userService;
 	

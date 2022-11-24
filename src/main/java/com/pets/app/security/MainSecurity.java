@@ -24,52 +24,37 @@ public class MainSecurity extends WebSecurityConfigurerAdapter{
 	
 	@Autowired
 	UserDetailsServiceImpl userDetailsServiceImpl;
-	
 	@Autowired
 	JwtEntryPoint jwtEntryPoint;
-	
+
 	@Bean
 	public JwtTokenFilter jwtTokenFilter() {
 		return new JwtTokenFilter();
 	}
-	
 	@Bean
 	public PasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
 	}
-
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 		auth.userDetailsService(userDetailsServiceImpl).passwordEncoder(passwordEncoder());
 	}
-
 	@Bean
 	@Override
 	public AuthenticationManager authenticationManagerBean() throws Exception {
 		return super.authenticationManagerBean();
 	}
-
 	@Override
 	protected AuthenticationManager authenticationManager() throws Exception {
 		return super.authenticationManager();
 	}
-
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 	
 		http.cors().and().csrf().disable()
 			.authorizeRequests()
-			.antMatchers("/auth/**").permitAll()
-			.antMatchers("/detalles/**").permitAll()
-			.antMatchers("/dueños/**").permitAll()
-			.antMatchers("/mascotas/**").permitAll()
-			.antMatchers("/usuarios/**").permitAll()
-			.antMatchers("/busquedas/**").permitAll()
-			.antMatchers("/refugios/**").permitAll()
-			.antMatchers("/adopciones/**").permitAll()
+			.antMatchers("/auth/**", "/error").permitAll()
 			.antMatchers("/files/**").permitAll()
-				.antMatchers("/error").permitAll()
-
 			//SwaggerDoc
 			.antMatchers(
 					"/auth/**",

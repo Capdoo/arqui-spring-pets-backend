@@ -15,45 +15,33 @@ public class UserModel {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
-	
-
-	
 	@Column(unique = true)
 	private String username;
-	
 	@Column(name="dni")
 	private String dni;
-
 	@Column(name="first_name")
 	private String firstName;
-
 	@Column(name="last_name")
 	private String lastName;
-
 	@Column(name="sur_name")
 	private String surName;
-	
 	@Column(name="phone")
 	private String phone;
-	
 	@Column(name="address")
 	private String address;
-
 	private String email;
-	
 	private String password;
+	private String linkImg;
 
-	private String linkImg;	
-	
+	@Column(name="token_password")
+	private String tokenPassword;
+
 	//Referenced owner
 	@OneToOne(cascade =  CascadeType.ALL,mappedBy = "user")
 	private OwnerModel owner;
-	
 	//Refugio
 	@OneToOne(cascade =  CascadeType.ALL,mappedBy = "user")
 	private ShelterModel shelter;
-	
-	
 	@ManyToMany(fetch=FetchType.EAGER)
 	@JoinTable(name="user_roles", joinColumns = @JoinColumn(name = "id_user"), inverseJoinColumns = @JoinColumn(name = "id_role"))
 	private Set<RoleModel> roles = new HashSet<>();
@@ -62,8 +50,6 @@ public class UserModel {
 		super();
 	}
 
-	
-
 	public UserModel(String name, String username, String email, String password) {
 		super();
 		this.firstName = name;
@@ -71,7 +57,6 @@ public class UserModel {
 		this.email = email;
 		this.password = password;
 	}
-
 
 	public UserModel(long id, String username, String dni, String firstName, String lastName, String surName, String phone, String address, String email, String password, String linkImg, OwnerModel owner, ShelterModel shelter, Set<RoleModel> roles) {
 		this.id = id;
@@ -200,6 +185,14 @@ public class UserModel {
 
 	public void setRoles(Set<RoleModel> roles) {
 		this.roles = roles;
+	}
+
+	public String getTokenPassword() {
+		return tokenPassword;
+	}
+
+	public void setTokenPassword(String tokenPassword) {
+		this.tokenPassword = tokenPassword;
 	}
 }
 
