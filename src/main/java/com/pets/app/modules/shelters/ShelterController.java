@@ -23,7 +23,6 @@ public class ShelterController {
 	@Autowired
 	UserService userService;
 
-	@ApiIgnore
 	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
 	@PostMapping("/create")
 	public ResponseEntity<Object> createShelter(@RequestBody ShelterDTO shelterDTO){
@@ -38,7 +37,6 @@ public class ShelterController {
 		
 	}
 
-	@ApiIgnore
 	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
 	@PostMapping("/create/partner")
 	//TO DO
@@ -54,7 +52,6 @@ public class ShelterController {
 
 	}
 
-	@ApiIgnore
 	@GetMapping("/read")
 	public ResponseEntity<Object> readShelters(){
 		
