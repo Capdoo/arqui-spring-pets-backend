@@ -4,6 +4,7 @@ import com.pets.app.dto.MensajeDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
 
@@ -17,6 +18,7 @@ public class AdoptionsController {
 	@Autowired
 	AdoptionService adopcionService;
 
+	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
 	@PostMapping("/create")
 	public ResponseEntity<Object> createAdoption(@RequestBody AdoptionDTO adoptionDTO){
 		
@@ -30,6 +32,7 @@ public class AdoptionsController {
 		
 	}
 
+	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
 	@GetMapping("/read")
 	public ResponseEntity<Object> readAdoptions(){
 		
@@ -40,9 +43,9 @@ public class AdoptionsController {
 		} catch (Exception e) {
 			return new ResponseEntity<Object>(new MensajeDTO("There was a problem"), HttpStatus.BAD_REQUEST);
 		}
-		
 	}
 
+	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
 	@GetMapping("/read/pet")
 	public ResponseEntity<Object> obtenerPorMascotaId(@RequestParam long id){
 		
@@ -55,6 +58,7 @@ public class AdoptionsController {
 		}
 	}
 
+	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
 	@GetMapping("/read/single")
 	public ResponseEntity<Object> readByUd(@RequestParam long id){
 		

@@ -5,6 +5,7 @@ import com.pets.app.security.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,10 +16,10 @@ public class OwnerControllers {
 
 	@Autowired
     OwnerService ownerService;
-	
 	@Autowired
 	UserService userService;
-	
+
+	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
 	@PostMapping("/create")
 	public ResponseEntity<Object> createOwner(@RequestBody OwnerDTO ownerDTO){
 		
@@ -43,7 +44,8 @@ public class OwnerControllers {
 		}
 		
 	}
-	
+
+	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
 	@GetMapping("/read")
 	public ResponseEntity<Object> get(){
 		

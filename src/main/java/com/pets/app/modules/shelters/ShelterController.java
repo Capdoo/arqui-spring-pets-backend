@@ -52,6 +52,7 @@ public class ShelterController {
 
 	}
 
+	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
 	@GetMapping("/read")
 	public ResponseEntity<Object> readShelters(){
 		
@@ -66,7 +67,7 @@ public class ShelterController {
 	}
 
 
-	@ApiIgnore
+	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
 	@GetMapping("/read/single")
 	public ResponseEntity<Object> readById(@RequestParam long id){
 
@@ -81,7 +82,7 @@ public class ShelterController {
 
 	}
 
-	@ApiIgnore
+	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
 	@GetMapping("/read/user")
 	public ResponseEntity<Object> readByDniUser(@RequestParam String dni){
 

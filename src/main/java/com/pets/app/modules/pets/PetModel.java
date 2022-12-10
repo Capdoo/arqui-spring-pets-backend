@@ -17,20 +17,34 @@ public class PetModel {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
-	
 	private String name;
 	private String gender;
 	private Timestamp birthDate;
 	private Timestamp registerDate;
 	private String colour;
-
 	//Especificado por el usuario
 	private String specificBreed;
 	private String characteristic;
 	private String size;
-	
 	//link de imagen
 	private String linkImg;
+
+	@ManyToOne
+	@JoinColumn(name="owner_id",referencedColumnName = "id", nullable=true)
+	private OwnerModel owner;
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "detail_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "PET_FK_DETAIL"))
+	private DetailModel detail;
+	//For searchs
+	@OneToMany(mappedBy="pet")
+	private Set<SearchModel> searchs;
+	//For pets
+	@OneToMany(mappedBy="pet")
+	private Set<AdoptionModel> adoptions;
+	//Shelters
+	@ManyToOne
+	@JoinColumn(name="shelter_id",referencedColumnName = "id", nullable=true)
+	private ShelterModel shelter;
 
 	public PetModel() {
 	}
@@ -52,27 +66,6 @@ public class PetModel {
 		this.adoptions = adoptions;
 		this.shelter = shelter;
 	}
-
-	@ManyToOne
-	@JoinColumn(name="owner_id",referencedColumnName = "id", nullable=true)
-	private OwnerModel owner;
-	
-	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "detail_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "PET_FK_DETAIL"))
-	private DetailModel detail;
-	
-	//For searchs
-	@OneToMany(mappedBy="pet")
-	private Set<SearchModel> searchs;
-	
-	//For pets
-	@OneToMany(mappedBy="pet")
-	private Set<AdoptionModel> adoptions;
-	
-	//Shelters
-	@ManyToOne
-	@JoinColumn(name="shelter_id",referencedColumnName = "id", nullable=true)
-	private ShelterModel shelter;
 
 
 	public long getId() {

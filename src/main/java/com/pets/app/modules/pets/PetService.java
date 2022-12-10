@@ -5,6 +5,8 @@ import com.pets.app.modules.details.DetailModel;
 import com.pets.app.modules.details.DetailRepository;
 import com.pets.app.modules.owners.OwnerModel;
 import com.pets.app.modules.owners.OwnerRepository;
+import com.pets.app.security.models.UserModel;
+import com.pets.app.security.repositories.UserRepository;
 import com.pets.app.utils.FechaUtil;
 import com.pets.app.utils.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,18 +21,16 @@ import java.util.List;
 @Service
 public class PetService {
 
-	
 	@Autowired
     PetRepository petRepository;
-	
 	@Autowired
 	OwnerRepository ownerRepository;
-	
 	@Autowired
 	DetailRepository detailRepository;
-	
 	@Autowired
 	FileUploadService fileUploadService;
+	@Autowired
+	UserRepository userRepository;
 	
 	public void savePet(PetDTO petDTO) throws IOException {
 
@@ -116,6 +116,41 @@ public class PetService {
 		return listPets;
 	}
 	
-	//Lista por id de dueño	
- 	
+	//Lista por username
+	public List<PetDTO> getAllByUsername(String username){
+
+		List<PetDTO> listSend = new ArrayList<PetDTO>();
+		UserModel userModel = userRepository.findByUsername(username).get();
+		OwnerModel ownerModel = ownerRepository.findByUser(userModel).get();
+		List<PetModel> petModelList = petRepository.findAllByOwner(ownerModel);
+
+		FechaUtil fechaUtil = new FechaUtil();
+		for(PetModel p:petModelList){
+			PetDTO petDTO = new PetDTO();
+				String birthDate = fechaUtil.convertirFecha(p.getBirthDate());
+				petDTO.setBirthDate(birthDate);
+				petDTO.setCharacteristic(p.getCharacteristic());
+				petDTO.setColour(p.getColour());
+				petDTO.setGender(p.getGender());
+				petDTO.setUrlLink(p.getLinkImg());
+				petDTO.setName(p.getName());
+				String registerDate = fechaUtil.convertirFecha(p.getRegisterDate());
+				petDTO.setRegisterDate(registerDate);
+				petDTO.setSize(p.getSize());
+				petDTO.setIdOwner(p.getOwner().getId());
+
+				if(p.getSpecificBreed()==null) {
+					petDTO.setIdDetail(p.getDetail().getId());
+
+				}else {
+					petDTO.setSpecies(p.getSpecificBreed());
+					petDTO.setBreed(null);
+					petDTO.setSpecificBreed(p.getSpecificBreed());
+
+				}
+
+			listSend.add(petDTO);
+		}
+		return listSend;
+	}
 }
