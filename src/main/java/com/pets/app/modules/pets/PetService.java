@@ -17,7 +17,6 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
-
 @Service
 public class PetService {
 
@@ -32,7 +31,7 @@ public class PetService {
 	@Autowired
 	UserRepository userRepository;
 	
-	public void savePet(PetDTO petDTO) throws IOException {
+	public void savePet(PetDTO petDTO, String username) throws IOException {
 
 		FechaUtil fechaUtil = new FechaUtil();
 		PetModel newPet = new PetModel();
@@ -46,29 +45,21 @@ public class PetService {
 		newPet.setCharacteristic(petDTO.getCharacteristic());
 		newPet.setSize(petDTO.getSize());
 
-		OwnerModel ownerPet = ownerRepository.findById(petDTO.getIdOwner()).get();
+		UserModel userModel = userRepository.findByUsername(username).get();
+		OwnerModel ownerPet = ownerRepository.findByUser(userModel).get();
 		newPet.setOwner(ownerPet);
 
-			if(petDTO.getSpecificBreed() == null) {
-				DetailModel petDetail = detailRepository.findBySpeciesAndBreed(
-						petDTO.getSpecies(),
-						petDTO.getBreed()).get();
-				newPet.setDetail(petDetail);
-				newPet.setSpecificBreed(null);
-	
-			}else {
-				newPet.setSpecificBreed(petDTO.getSpecies()+"#"+petDTO.getSpecificBreed());
-				newPet.setDetail(null);
-			}
+		DetailModel petDetail = detailRepository.findBySpeciesAndBreed(
+				petDTO.getSpecies(),
+				petDTO.getBreed()).get();
+		newPet.setDetail(petDetail);
 
 		newPet.setShelter(null);
-		
 				String encoded = fileUploadService.obtenerEncoded(petDTO.getEncoded());
 				byte[] image = fileUploadService.convertStringToBytes(encoded);
 				String url = fileUploadService.fileUpload(image);
 
 		newPet.setLinkImg(url);
-			
 		petRepository.save(newPet);
 	}
 	
@@ -97,16 +88,9 @@ public class PetService {
 				petSingle.setSize(p.getSize());
 				petSingle.setIdOwner(p.getOwner().getId());
 
-				if(p.getSpecificBreed()==null) {
-					petSingle.setSpecies(p.getDetail().getSpecies());
-					petSingle.setBreed(p.getDetail().getBreed());
-					petSingle.setSpecificBreed(null);
-					petSingle.setIdDetail(p.getDetail().getId());
-				}else {
-					petSingle.setSpecies(stringUtil.obtenerEspecieToken(p.getSpecificBreed()));
-					petSingle.setBreed(null);
-					petSingle.setSpecificBreed(stringUtil.obtenerRazaToken(p.getSpecificBreed()));
-				}
+				petSingle.setSpecies(p.getDetail().getSpecies());
+				petSingle.setBreed(p.getDetail().getBreed());
+				petSingle.setIdDetail(p.getDetail().getId());
 
 				petSingle.setUrlLink(p.getLinkImg());
 
@@ -138,17 +122,7 @@ public class PetService {
 				petDTO.setRegisterDate(registerDate);
 				petDTO.setSize(p.getSize());
 				petDTO.setIdOwner(p.getOwner().getId());
-
-				if(p.getSpecificBreed()==null) {
-					petDTO.setIdDetail(p.getDetail().getId());
-
-				}else {
-					petDTO.setSpecies(p.getSpecificBreed());
-					petDTO.setBreed(null);
-					petDTO.setSpecificBreed(p.getSpecificBreed());
-
-				}
-
+				petDTO.setIdDetail(p.getDetail().getId());
 			listSend.add(petDTO);
 		}
 		return listSend;

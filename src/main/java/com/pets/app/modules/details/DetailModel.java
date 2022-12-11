@@ -12,7 +12,6 @@ public class DetailModel {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
-	
 	private String species;
 	private String breed;
 
@@ -23,11 +22,9 @@ public class DetailModel {
 		super();
 	}
 
-	public DetailModel(long id, String species, String breed, PetModel pet) {
-		this.id = id;
+	public DetailModel(String species, String breed) {
 		this.species = species;
 		this.breed = breed;
-		this.pet = pet;
 	}
 
 	public long getId() {

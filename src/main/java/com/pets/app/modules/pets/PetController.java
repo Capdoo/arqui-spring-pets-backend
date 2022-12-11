@@ -24,19 +24,18 @@ public class PetController {
 
 	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
 	@PostMapping("/create")
-	public ResponseEntity<Object> createPet(@RequestBody PetDTO petDTO){
-		
+	public ResponseEntity<Object> createPet(@RequestBody PetDTO petDTO, @RequestHeader("Authorization") String token){
+		String realToken = token.split(" ")[1];
+		String username = jwtProvider.getNombreUsuarioFromToken(realToken);
 		try {
-			petService.savePet(petDTO);
+			petService.savePet(petDTO, username);
 			return new ResponseEntity<Object>(new MensajeDTO("Pet registered successfully"), HttpStatus.OK);
 
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new ResponseEntity<Object>(new MensajeDTO("There has been a problem"), HttpStatus.BAD_REQUEST);
 		}
-		
 	}
-
 	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
 	@GetMapping("/read")
 	public ResponseEntity<Object> readPets(){
