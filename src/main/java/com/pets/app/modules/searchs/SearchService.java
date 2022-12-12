@@ -83,14 +83,9 @@ public class SearchService {
 				
 				//Nuevo: Nombre y raza (especie)
 				busquedaSingle.setNamePet(p.getPet().getName());
-				if(p.getPet().getDetail() != null) {
-					busquedaSingle.setSpeciesPet(p.getPet().getDetail().getSpecies());
-					busquedaSingle.setBreedPet(p.getPet().getDetail().getBreed());
-				}else {
-					busquedaSingle.setSpeciesPet(stringUtil.obtenerEspecieToken(p.getPet().getSpecificBreed()));
-					busquedaSingle.setBreedPet(stringUtil.obtenerRazaToken(p.getPet().getSpecificBreed()));
-				}
-				
+				busquedaSingle.setSpeciesPet(p.getPet().getDetail().getSpecies());
+				busquedaSingle.setBreedPet(p.getPet().getDetail().getBreed());
+
 				busquedaSingle.setUrlLink(p.getLinkImg());
 
 			listSend.add(busquedaSingle);

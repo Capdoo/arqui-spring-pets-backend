@@ -114,22 +114,22 @@ public class UserService {
 
 	}
 
-	public void deleteUser(long id){
+	public UserDTO getUserInfoByUsername(String username){
+		UserModel userModel = userRepository.findByUsername(username).get();
+		return new UserDTO(
+				userModel.getId(),
+				userModel.getFirstName(),
+				userModel.getLastName(),
+				userModel.getSurName(),
+				userModel.getAddress(),
+				userModel.getDni(),
+				userModel.getEmail(),
+				userModel.getPhone(),
+				userModel.getUsername(),
+				"",
+				userModel.getLinkImg()
+		);
 
-//		//Get the user
-//		UserModel userModel = userRepository.findById(id).get();
-//
-//		//Si es dueno
-//		if(ownerService.existsOwnerByUserId(userModel.getId())){
-//			//Eliminar mascotas
-//		}
-//
-//		//Si es propietario de un o unos refugios, eliminar todos
-//		if(shelterService.existsRefugioByUserId(userModel.getId())){
-//			//
-//		}
-//
-//		userRepository.deleteById(id);
 	}
 	
 }

@@ -21,7 +21,7 @@ public class DetailsController {
 	@Autowired
 	DetailService detailService;
 
-	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
+	@PreAuthorize("hasRole('ROLE_USER')")
 	@GetMapping("/read")
 	public ResponseEntity<Object> readAll(){
 		try {
@@ -34,7 +34,7 @@ public class DetailsController {
 	}
 
 
-	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
+	@PreAuthorize("hasRole('ROLE_USER')")
 	@GetMapping("/read/species")
 	public ResponseEntity<Object> readSpecies(){
 		
@@ -48,7 +48,7 @@ public class DetailsController {
 		
 	}
 
-	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
+	@PreAuthorize("hasRole('ROLE_USER')")
 	@GetMapping("/read/breed")
 	public ResponseEntity<Object> readBreedsBySpecies(@RequestParam("species") String especie){
 		

@@ -5,8 +5,8 @@ import com.pets.app.security.models.UserModel;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.List;
 import java.util.Set;
-
 
 @Entity
 @Table(name="owners")
@@ -17,7 +17,6 @@ public class OwnerModel {
 	private long id;
 	private Timestamp registerDate;
 	private int numberOfPets;
-	
 	//Secundarios
 	private int rate;
 	private long historial_id;
@@ -27,17 +26,15 @@ public class OwnerModel {
 	@JoinColumn(name = "user_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "OWNER_FK_USER"))
 	private UserModel user;
 	
-	
 	//Para mascotas
 	@OneToMany(mappedBy="owner")
-	private Set<PetModel> pets;
-	
-	
+	private List<PetModel> pets;
+
 	public OwnerModel() {
 		super();
 	}
 
-	public OwnerModel(long id, Timestamp registerDate, int numberOfPets, int rate, long historial_id, UserModel user, Set<PetModel> pets) {
+	public OwnerModel(long id, Timestamp registerDate, int numberOfPets, int rate, long historial_id, UserModel user, List<PetModel> pets) {
 		this.id = id;
 		this.registerDate = registerDate;
 		this.numberOfPets = numberOfPets;
@@ -96,11 +93,11 @@ public class OwnerModel {
 		this.user = user;
 	}
 
-	public Set<PetModel> getPets() {
+	public List<PetModel> getPets() {
 		return pets;
 	}
 
-	public void setPets(Set<PetModel> pets) {
+	public void setPets(List<PetModel> pets) {
 		this.pets = pets;
 	}
 }

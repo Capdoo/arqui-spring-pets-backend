@@ -19,7 +19,7 @@ public class OwnerControllers {
 	@Autowired
 	UserService userService;
 
-	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
+	@PreAuthorize("hasRole('ROLE_USER')")
 	@PostMapping("/create")
 	public ResponseEntity<Object> createOwner(@RequestBody OwnerDTO ownerDTO){
 		
@@ -45,7 +45,7 @@ public class OwnerControllers {
 		
 	}
 
-	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
+	@PreAuthorize("hasRole('ROLE_USER')")
 	@GetMapping("/read")
 	public ResponseEntity<Object> get(){
 		

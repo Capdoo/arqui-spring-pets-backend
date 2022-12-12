@@ -106,7 +106,7 @@ public class PetService {
 		List<PetDTO> listSend = new ArrayList<PetDTO>();
 		UserModel userModel = userRepository.findByUsername(username).get();
 		OwnerModel ownerModel = ownerRepository.findByUser(userModel).get();
-		List<PetModel> petModelList = petRepository.findAllByOwner(ownerModel);
+		List<PetModel> petModelList = ownerModel.getPets();
 
 		FechaUtil fechaUtil = new FechaUtil();
 		for(PetModel p:petModelList){

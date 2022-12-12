@@ -23,7 +23,7 @@ public class ShelterController {
 	@Autowired
 	UserService userService;
 
-	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
+	@PreAuthorize("hasRole('ROLE_USER')")
 	@PostMapping("/create")
 	public ResponseEntity<Object> createShelter(@RequestBody ShelterDTO shelterDTO){
 		
@@ -37,7 +37,7 @@ public class ShelterController {
 		
 	}
 
-	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
+	@PreAuthorize("hasRole('ROLE_USER')")
 	@PostMapping("/create/partner")
 	//TO DO
 	public ResponseEntity<Object> createPartner(@RequestBody ShelterDTO shelterDTO){
@@ -52,7 +52,7 @@ public class ShelterController {
 
 	}
 
-	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
+	@PreAuthorize("hasRole('ROLE_USER')")
 	@GetMapping("/read")
 	public ResponseEntity<Object> readShelters(){
 		
@@ -67,7 +67,7 @@ public class ShelterController {
 	}
 
 
-	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
+	@PreAuthorize("hasRole('ROLE_USER')")
 	@GetMapping("/read/single")
 	public ResponseEntity<Object> readById(@RequestParam long id){
 
@@ -82,7 +82,7 @@ public class ShelterController {
 
 	}
 
-	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
+	@PreAuthorize("hasRole('ROLE_USER')")
 	@GetMapping("/read/user")
 	public ResponseEntity<Object> readByDniUser(@RequestParam String dni){
 

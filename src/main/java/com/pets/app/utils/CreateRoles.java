@@ -12,12 +12,11 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.List;
 
-@Component
+//@Component
 public class CreateRoles implements CommandLineRunner{
 
 	@Autowired
 	RoleService roleService;
-
 	@Autowired
 	DetailRepository detailRepository;
 	

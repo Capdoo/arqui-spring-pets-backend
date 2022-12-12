@@ -18,7 +18,7 @@ public class SearchsController {
 	@Autowired
     SearchService searchService;
 
-	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
+	@PreAuthorize("hasRole('ROLE_USER')")
 	@PostMapping("/create")
 	public ResponseEntity<Object> createSearch(@RequestBody SearchDTO searchDTO){
 		try {
@@ -29,7 +29,7 @@ public class SearchsController {
 		}
 	}
 
-	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
+	@PreAuthorize("hasRole('ROLE_USER')")
 	@GetMapping("/read")
 	public ResponseEntity<Object> readSearchs(){
 		try {
@@ -40,7 +40,7 @@ public class SearchsController {
 		}
 	}
 
-	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
+	@PreAuthorize("hasRole('ROLE_USER')")
 	@GetMapping("/read/single")
 	public ResponseEntity<Object> readById(@RequestParam long id){
 		try {
@@ -51,7 +51,7 @@ public class SearchsController {
 		}
 	}
 
-	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
+	@PreAuthorize("hasRole('ROLE_USER')")
 	@GetMapping("/read/pet")
 	public ResponseEntity<Object> readByPetId(@RequestParam long id){
 		try {

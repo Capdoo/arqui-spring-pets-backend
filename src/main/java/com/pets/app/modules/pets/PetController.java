@@ -22,7 +22,7 @@ public class PetController {
 	@Autowired
 	UserService userService;
 
-	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
+	@PreAuthorize("hasRole('ROLE_USER')")
 	@PostMapping("/create")
 	public ResponseEntity<Object> createPet(@RequestBody PetDTO petDTO, @RequestHeader("Authorization") String token){
 		String realToken = token.split(" ")[1];
@@ -36,7 +36,7 @@ public class PetController {
 			return new ResponseEntity<Object>(new MensajeDTO("There has been a problem"), HttpStatus.BAD_REQUEST);
 		}
 	}
-	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
+	@PreAuthorize("hasRole('ROLE_USER')")
 	@GetMapping("/read")
 	public ResponseEntity<Object> readPets(){
 		try {
@@ -48,7 +48,7 @@ public class PetController {
 		}
 	}
 
-	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
+	@PreAuthorize("hasRole('ROLE_USER')")
 	@GetMapping("/read-user")
 	public ResponseEntity<Object> readPetsByUsername(@RequestHeader("Authorization") String token){
 		String realToken = token.split(" ")[1];

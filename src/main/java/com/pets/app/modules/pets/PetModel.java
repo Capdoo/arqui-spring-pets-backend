@@ -23,7 +23,6 @@ public class PetModel {
 	private Timestamp registerDate;
 	private String colour;
 	//Especificado por el usuario
-	private String specificBreed;
 	private String characteristic;
 	private String size;
 	//link de imagen
@@ -49,14 +48,14 @@ public class PetModel {
 	public PetModel() {
 	}
 
-	public PetModel(long id, String name, String gender, Timestamp birthDate, Timestamp registerDate, String colour, String specificBreed, String characteristic, String size, String linkImg, OwnerModel owner, DetailModel detail, Set<SearchModel> searchs, Set<AdoptionModel> adoptions, ShelterModel shelter) {
+	public PetModel(long id, String name, String gender, Timestamp birthDate, Timestamp registerDate, String colour, String characteristic, String size, String linkImg, OwnerModel owner, DetailModel detail, Set<SearchModel> searchs, Set<AdoptionModel> adoptions, ShelterModel shelter) {
 		this.id = id;
 		this.name = name;
 		this.gender = gender;
 		this.birthDate = birthDate;
 		this.registerDate = registerDate;
 		this.colour = colour;
-		this.specificBreed = specificBreed;
+
 		this.characteristic = characteristic;
 		this.size = size;
 		this.linkImg = linkImg;
@@ -114,14 +113,6 @@ public class PetModel {
 
 	public void setColour(String colour) {
 		this.colour = colour;
-	}
-
-	public String getSpecificBreed() {
-		return specificBreed;
-	}
-
-	public void setSpecificBreed(String specificBreed) {
-		this.specificBreed = specificBreed;
 	}
 
 	public String getCharacteristic() {
