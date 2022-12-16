@@ -29,13 +29,28 @@ public class CreateRoles implements CommandLineRunner{
 		roleService.save(rolUser);
 
 		String[] listBreedsCats = new String[]{
-				"Abisino","Americano de pelo duro","Asiático","Azul ruso","Balinés", "Bengalí","Birmano",
-				"Bobtail japonés de pelo corto", "Bobtail japonés de pelo largo"
+				"Abisino"
+				,"Americano de pelo duro",
+				"Asiático",
+				"Azul ruso",
+				"Balinés",
+				"Bengalí","Birmano",
+				"Bobtail japonés de pelo corto",
+				"Bobtail japonés de pelo largo"
 		};
+
+		String[] listBreedsDogs = new String[]{
+				"",""
+		};
+
 		List<DetailModel> listDetails = new ArrayList<>();
 		for(String p:listBreedsCats){
 			listDetails.add(new DetailModel("gato", p));
 		}
+		for(String q:listBreedsDogs){
+			listDetails.add((new DetailModel("dog", q)));
+		}
+
 		detailRepository.saveAll(listDetails);
 
 	}

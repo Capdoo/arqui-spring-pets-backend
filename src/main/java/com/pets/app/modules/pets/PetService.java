@@ -66,9 +66,17 @@ public class PetService {
 	//List general
 	public List<PetDTO> listAllPets(){
 		List<PetDTO> listPets = new ArrayList<>();
-		List<PetModel> listDB = petRepository.findAll();
-		
-		for(PetModel p : listDB) {
+		List<OwnerModel> listOwnerDb = ownerRepository.findAll();
+		List<Long> listIdPetsByOwner = new ArrayList<>();
+
+		for(OwnerModel p:listOwnerDb){
+			for(PetModel q:p.getPets()){
+				listIdPetsByOwner.add(q.getId());
+			}
+		}
+		List<PetModel> petModelDb = petRepository.findAllById(listIdPetsByOwner);
+
+		for(PetModel p : petModelDb) {
 			FechaUtil fechaUtil = new FechaUtil();
 			StringUtil stringUtil = new StringUtil();
 			PetDTO petSingle = new PetDTO();
@@ -99,7 +107,9 @@ public class PetService {
 		
 		return listPets;
 	}
-	
+
+
+
 	//Lista por username
 	public List<PetDTO> getAllByUsername(String username){
 

@@ -30,7 +30,7 @@ public class UsersController {
 
     @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping("/read/single")
-    public ResponseEntity<Object> getUserById(@RequestHeader("Authorization") String token){
+    public ResponseEntity<Object> getUserInfo(@RequestHeader("Authorization") String token){
         String realToken = token.split(" ")[1];
         String username = jwtProvider.getNombreUsuarioFromToken(realToken);
         if(!userService.existsByUsernameOrEmail(username)){

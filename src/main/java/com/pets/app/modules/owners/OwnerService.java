@@ -17,10 +17,8 @@ public class OwnerService {
 
 	@Autowired
 	UserRepository usuarioRepository;
-	
 	@Autowired
     OwnerRepository ownerRepository;
-	
 	@Autowired
 	UserService userService;
 	
