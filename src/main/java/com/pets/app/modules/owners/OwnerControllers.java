@@ -35,8 +35,8 @@ public class OwnerControllers {
 			}
 
 			int c = 12;
-			
-			ownerService.saveOwner(ownerDTO);
+
+			OwnerModel ownerModel = ownerService.saveOwner(ownerDTO);
 			return new ResponseEntity<Object>(new MensajeDTO("Registered successfully"), HttpStatus.OK);
 
 		} catch (Exception e) {

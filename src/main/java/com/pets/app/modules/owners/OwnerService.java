@@ -22,20 +22,21 @@ public class OwnerService {
 	@Autowired
 	UserService userService;
 	
-	public void saveOwner(OwnerDTO ownerDTO) {
+	public OwnerModel saveOwner(OwnerDTO ownerDTO) {
 		
 		//Getting the User
-		int user_id = (int) ownerDTO.getUser_id();
-		UserModel userObtained = usuarioRepository.findById(user_id).get();
+		//int user_id = (int) ownerDTO.getUser_id();
+		Optional<UserModel> userObtained = usuarioRepository.findById(ownerDTO.getUser_id());
+		UserModel userModel = userObtained.get();
 		
 		OwnerModel OwnerModel = new OwnerModel();
 			OwnerModel.setRegisterDate(new Timestamp(System.currentTimeMillis()));
 			OwnerModel.setHistorial_id(ownerDTO.getHistorial_id());
 			OwnerModel.setNumberOfPets(ownerDTO.getNumberOfPets());
 			OwnerModel.setRate(ownerDTO.getRate());
-			OwnerModel.setUser(userObtained);
+			OwnerModel.setUser(userModel);
 			
-		ownerRepository.save(OwnerModel);
+		return ownerRepository.save(OwnerModel);
 	}
 	
 	public List<OwnerDTO> listAll(){
@@ -58,28 +59,21 @@ public class OwnerService {
 
 			sendList.add(ownerSingle);
 		}
-		
 		return sendList;
 	}
-	
-	//Useful
 	public boolean existsOwnerByUserId(long idUser) {
 		boolean res = false;
-		
 		if(userService.existsPorId(idUser)) {
-			UserModel user = usuarioRepository.findById(idUser).get();
-			
-			Optional<OwnerModel> ownerSupposed = ownerRepository.findByUser(user);
-			
+			Optional<UserModel> user = usuarioRepository.findById(idUser);
+			UserModel userModel = user.get();
+			Optional<OwnerModel> ownerSupposed = ownerRepository.findByUser(userModel);
 			if(ownerSupposed.isPresent()) {
 				res = true;
 			}
 		}
 		return res;
 	}
-
 }
-
 
 
 

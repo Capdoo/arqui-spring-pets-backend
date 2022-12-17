@@ -85,11 +85,11 @@ public class PetService {
 				petSingle.setName(p.getName());
 				petSingle.setGender(p.getGender());
 				
-		   			String dateNacimiento = fechaUtil.convertirFecha(p.getBirthDate());
-					petSingle.setBirthDate(dateNacimiento);
-				
-			   		String dateRegistro = fechaUtil.convertirFecha(p.getBirthDate());
-					petSingle.setBirthDate(dateRegistro);
+				String dateNacimiento = fechaUtil.convertirFecha(p.getBirthDate());
+				petSingle.setBirthDate(dateNacimiento);
+
+				String dateRegistro = fechaUtil.convertirFecha(p.getBirthDate());
+				petSingle.setBirthDate(dateRegistro);
 
 				petSingle.setColour(p.getColour());
 				petSingle.setCharacteristic(p.getCharacteristic());
