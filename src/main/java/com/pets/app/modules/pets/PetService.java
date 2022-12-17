@@ -31,7 +31,7 @@ public class PetService {
 	@Autowired
 	UserRepository userRepository;
 	
-	public void savePet(PetDTO petDTO, String username) throws IOException {
+	public PetModel savePet(PetDTO petDTO, String username) throws IOException {
 
 		FechaUtil fechaUtil = new FechaUtil();
 		PetModel newPet = new PetModel();
@@ -60,7 +60,7 @@ public class PetService {
 				String url = fileUploadService.fileUpload(image);
 
 		newPet.setLinkImg(url);
-		petRepository.save(newPet);
+		return petRepository.save(newPet);
 	}
 	
 	//List general

@@ -28,7 +28,7 @@ public class PetController {
 		String realToken = token.split(" ")[1];
 		String username = jwtProvider.getNombreUsuarioFromToken(realToken);
 		try {
-			petService.savePet(petDTO, username);
+			PetModel petModel = petService.savePet(petDTO, username);
 			return new ResponseEntity<Object>(new MensajeDTO("Pet registered successfully"), HttpStatus.OK);
 
 		} catch (Exception e) {

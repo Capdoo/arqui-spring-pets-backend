@@ -39,8 +39,6 @@ class OwnerServiceTest {
     private OwnerModel ownerModel;
     private UserModel userModel;
     private RoleModel roleModel;
-    @Autowired
-    PasswordEncoder passwordEncoder;
 
     @BeforeEach
     void setUp() {
