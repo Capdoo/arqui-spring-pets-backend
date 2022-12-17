@@ -86,7 +86,7 @@ class OwnerServiceTest {
         //Test2
         Mockito.when(ownerRepository.findByUser(any(UserModel.class))).thenReturn(Optional.of(ownerModel));
         Mockito.when(userService.existsPorId(any(Long.class))).thenReturn(new Boolean(Boolean.TRUE));
-        Mockito.when(usuarioRepository.findById(any(Long.class))).thenReturn(Optional.of(userModel));
+        Mockito.when(usuarioRepository.findById(1)).thenReturn(Optional.of(userModel));
         //Test3
         Mockito.when(ownerRepository.save(any(OwnerModel.class))).thenReturn(ownerModel);
     }
@@ -111,6 +111,7 @@ class OwnerServiceTest {
 
     @Test
     void saveOwner(){
+        Mockito.when(usuarioRepository.findById(1)).thenReturn(Optional.of(userModel));
         OwnerDTO ownerDTO = new OwnerDTO();
             ownerDTO.setUser_id(new Long(1));
         System.out.println("Durante el test 3");

@@ -27,6 +27,7 @@ public class OwnerService {
 		//Getting the User
 		//int user_id = (int) ownerDTO.getUser_id();
 		Optional<UserModel> userObtained = usuarioRepository.findById(ownerDTO.getUser_id());
+		System.out.println(ownerDTO.getUser_id());
 		UserModel userModel = userObtained.get();
 		
 		OwnerModel OwnerModel = new OwnerModel();
