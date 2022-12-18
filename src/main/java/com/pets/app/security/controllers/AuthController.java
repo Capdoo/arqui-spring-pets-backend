@@ -57,9 +57,9 @@ public class AuthController {
 			return new ResponseEntity(new MensajeDTO("Email already in use"), HttpStatus.BAD_REQUEST);
 		}
 		UserModel usuarioModel = new UserModel();
-			usuarioModel.setLastName(newUserDTO.getFirstName());
+			usuarioModel.setLastName(newUserDTO.getLastName());
 			usuarioModel.setSurName(newUserDTO.getSurName());
-			usuarioModel.setFirstName(newUserDTO.getName());
+			usuarioModel.setFirstName(newUserDTO.getFirstName());
 			usuarioModel.setAddress(newUserDTO.getAddress());
 			usuarioModel.setDni(newUserDTO.getDni());
 			usuarioModel.setEmail(newUserDTO.getEmail());
@@ -74,10 +74,9 @@ public class AuthController {
 		if (newUserDTO.getRoles().contains("rept")) {
 			roles.add(roleService.getByRoleName(RoleName.ROLE_REPT).get());
 		}
-//		String encoded = fileUploadService.obtenerEncoded(newUserDTO.getEncoded());
-//		byte[] imagen = fileUploadService.convertStringToBytes(encoded);
-//		String url = fileUploadService.fileUpload(imagen);
-//		usuarioModel.setLinkImg(url);
+		String encoded = fileUploadService.obtenerEncoded(newUserDTO.getEncoded());
+		byte[] imagen = fileUploadService.convertStringToBytes(encoded);
+		usuarioModel.setImage(imagen);
 		usuarioModel.setRoles(roles);
 		userService.save(usuarioModel);
 		return new ResponseEntity(new MensajeDTO("User registered successfully"), HttpStatus.CREATED);

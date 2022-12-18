@@ -16,7 +16,7 @@ public class UserDTO {
 	public UserDTO() {
 		super();
 	}
-	public UserDTO(long id, String firstName, String lastName, String surName, String address, String dni, String email, String phone, String username, String encoded, String urlLink) {
+	public UserDTO(long id, String firstName, String lastName, String surName, String address, String dni, String email, String phone, String username, String encoded) {
 		this.id = id;
 		this.firstName = firstName;
 		this.lastName = lastName;
@@ -27,7 +27,7 @@ public class UserDTO {
 		this.phone = phone;
 		this.username = username;
 		this.encoded = encoded;
-		this.urlLink = urlLink;
+
 	}
 	public long getId() {
 		return id;

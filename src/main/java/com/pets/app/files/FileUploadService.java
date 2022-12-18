@@ -10,7 +10,6 @@ import java.io.IOException;
 import java.util.Base64;
 import java.util.Map;
 
-
 @Service
 public class FileUploadService {
 
@@ -42,7 +41,11 @@ public class FileUploadService {
 	public byte[] convertStringToBytes(String encoded) {
 		return Base64.getDecoder().decode(encoded);
 	}
-	
+
+	public String convertBytesToString(byte[] image){
+		return Base64.getEncoder().encodeToString(image);
+	}
+
 	public String obtenerEncoded(String brute) {
 		String partSeparator = ",";
 		if (brute.contains(partSeparator)) {

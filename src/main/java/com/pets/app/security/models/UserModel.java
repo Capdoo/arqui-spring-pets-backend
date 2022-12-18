@@ -29,7 +29,10 @@ public class UserModel {
 	private String address;
 	private String email;
 	private String password;
-	private String linkImg;
+
+	@Lob
+	@Column(name="image")
+	private byte[] image;
 
 	@Column(name="token_password")
 	private String tokenPassword;
@@ -56,7 +59,7 @@ public class UserModel {
 		this.password = password;
 	}
 
-	public UserModel(long id, String username, String dni, String firstName, String lastName, String surName, String phone, String address, String email, String password, String linkImg, OwnerModel owner, ShelterModel shelter, Set<RoleModel> roles) {
+	public UserModel(long id, String username, String dni, String firstName, String lastName, String surName, String phone, String address, String email, String password, byte[] image, OwnerModel owner, ShelterModel shelter, Set<RoleModel> roles) {
 		this.id = id;
 		this.username = username;
 		this.dni = dni;
@@ -67,7 +70,7 @@ public class UserModel {
 		this.address = address;
 		this.email = email;
 		this.password = password;
-		this.linkImg = linkImg;
+		this.image = image;
 		this.owner = owner;
 		this.shelter = shelter;
 		this.roles = roles;
@@ -153,12 +156,12 @@ public class UserModel {
 		this.password = password;
 	}
 
-	public String getLinkImg() {
-		return linkImg;
+	public byte[] getImage() {
+		return image;
 	}
 
-	public void setLinkImg(String linkImg) {
-		this.linkImg = linkImg;
+	public void setImage(byte[] image) {
+		this.image = image;
 	}
 
 	public OwnerModel getOwner() {

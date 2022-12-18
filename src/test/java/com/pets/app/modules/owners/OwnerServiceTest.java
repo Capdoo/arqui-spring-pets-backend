@@ -69,7 +69,7 @@ class OwnerServiceTest {
             userModel.setAddress("Los Rosales 625");
             userModel.setEmail("jimmymcguill@islascaiman.gob");
             userModel.setPassword("1234");
-            userModel.setLinkImg("urllink");
+            //userModel.setLinkImg("urllink");
             userModel.setTokenPassword("ebc");
             userModel.setOwner(ownerModel);
             userModel.setShelter(new ShelterModel());

@@ -53,13 +53,13 @@ public class PetService {
 				petDTO.getSpecies(),
 				petDTO.getBreed()).get();
 		newPet.setDetail(petDetail);
-
 		newPet.setShelter(null);
-				String encoded = fileUploadService.obtenerEncoded(petDTO.getEncoded());
-				byte[] image = fileUploadService.convertStringToBytes(encoded);
-				String url = fileUploadService.fileUpload(image);
 
-		newPet.setLinkImg(url);
+
+		String encoded = fileUploadService.obtenerEncoded(petDTO.getEncoded());
+		byte[] image = fileUploadService.convertStringToBytes(encoded);
+
+		newPet.setImage(image);
 		return petRepository.save(newPet);
 	}
 	
@@ -100,7 +100,7 @@ public class PetService {
 				petSingle.setBreed(p.getDetail().getBreed());
 				petSingle.setIdDetail(p.getDetail().getId());
 
-				petSingle.setUrlLink(p.getLinkImg());
+				petSingle.setEncoded(fileUploadService.convertBytesToString(p.getImage()));
 
 			listPets.add(petSingle);
 		}
@@ -126,7 +126,7 @@ public class PetService {
 				petDTO.setCharacteristic(p.getCharacteristic());
 				petDTO.setColour(p.getColour());
 				petDTO.setGender(p.getGender());
-				petDTO.setUrlLink(p.getLinkImg());
+				petDTO.setEncoded(fileUploadService.convertBytesToString(p.getImage()));
 				petDTO.setName(p.getName());
 				String registerDate = fechaUtil.convertirFecha(p.getRegisterDate());
 				petDTO.setRegisterDate(registerDate);

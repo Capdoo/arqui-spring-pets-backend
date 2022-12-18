@@ -4,7 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class NewUserDTO {
-
+	private String lastName;
 	private String firstName;
 	private String surName;
 	private String dni;
@@ -115,5 +115,14 @@ public class NewUserDTO {
 
 	public void setRoles(Set<String> roles) {
 		this.roles = roles;
+	}
+
+
+	public String getLastName() {
+		return lastName;
+	}
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
 	}
 }

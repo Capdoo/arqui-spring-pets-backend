@@ -1,5 +1,6 @@
 package com.pets.app.security.services;
 
+import com.pets.app.files.FileUploadService;
 import com.pets.app.modules.owners.OwnerRepository;
 import com.pets.app.security.dto.UserDTO;
 import com.pets.app.security.models.UserModel;
@@ -24,6 +25,8 @@ public class UserService {
 	OwnerRepository ownerRepository;
 	@Autowired
 	ModelDTOService modelDTOService;
+	@Autowired
+	FileUploadService fileUploadService;
 	
 	//Get
 	public List<UserDTO> listar(){
@@ -44,8 +47,7 @@ public class UserService {
 				usuarioSingle.setUsername(p.getUsername());
 				usuarioSingle.setPhone(p.getPhone());
 				
-				
-				usuarioSingle.setUrlLink(p.getLinkImg());
+				usuarioSingle.setEncoded(fileUploadService.convertBytesToString(p.getImage()));
 				
 			listaEnviar.add(usuarioSingle);
 		}
@@ -126,8 +128,7 @@ public class UserService {
 				userModel.getEmail(),
 				userModel.getPhone(),
 				userModel.getUsername(),
-				"",
-				userModel.getLinkImg()
+				fileUploadService.convertBytesToString(userModel.getImage())
 		);
 
 	}

@@ -26,7 +26,10 @@ public class PetModel {
 	private String characteristic;
 	private String size;
 	//link de imagen
-	private String linkImg;
+
+	@Lob
+	@Column(name="image")
+	private byte[] image;
 
 	@ManyToOne
 	@JoinColumn(name="owner_id",referencedColumnName = "id", nullable=true)
@@ -48,7 +51,7 @@ public class PetModel {
 	public PetModel() {
 	}
 
-	public PetModel(long id, String name, String gender, Timestamp birthDate, Timestamp registerDate, String colour, String characteristic, String size, String linkImg, OwnerModel owner, DetailModel detail, Set<SearchModel> searchs, Set<AdoptionModel> adoptions, ShelterModel shelter) {
+	public PetModel(long id, String name, String gender, Timestamp birthDate, Timestamp registerDate, String colour, String characteristic, byte[] image, String linkImg, OwnerModel owner, DetailModel detail, Set<SearchModel> searchs, Set<AdoptionModel> adoptions, ShelterModel shelter) {
 		this.id = id;
 		this.name = name;
 		this.gender = gender;
@@ -58,7 +61,7 @@ public class PetModel {
 
 		this.characteristic = characteristic;
 		this.size = size;
-		this.linkImg = linkImg;
+		this.image = image;
 		this.owner = owner;
 		this.detail = detail;
 		this.searchs = searchs;
@@ -131,12 +134,12 @@ public class PetModel {
 		this.size = size;
 	}
 
-	public String getLinkImg() {
-		return linkImg;
+	public byte[] getImage() {
+		return image;
 	}
 
-	public void setLinkImg(String linkImg) {
-		this.linkImg = linkImg;
+	public void setImage(byte[] image) {
+		this.image = image;
 	}
 
 	public OwnerModel getOwner() {

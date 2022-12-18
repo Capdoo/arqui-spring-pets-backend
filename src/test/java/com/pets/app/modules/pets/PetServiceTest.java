@@ -71,7 +71,7 @@ class PetServiceTest {
             userModel.setAddress("Los Rosales 625");
             userModel.setEmail("jimmymcguill@islascaiman.gob");
             userModel.setPassword("1234");
-            userModel.setLinkImg("urllink");
+            //userModel.setLinkImg("urllink");
             userModel.setTokenPassword("ebc");
             userModel.setOwner(ownerModel);
             userModel.setShelter(new ShelterModel());
@@ -89,7 +89,7 @@ class PetServiceTest {
             petModel.setColour("white");
             petModel.setCharacteristic("large");
             petModel.setSize("small");
-            petModel.setLinkImg("url");
+            //petModel.setLinkImg("url");
             //petModel.setOwner(new OwnerModel());
             petModel.setDetail(detailModel);
             petModel.setSearchs(null);
@@ -140,7 +140,7 @@ class PetServiceTest {
             petDTO.setIdOwner(new Long(1));
             petDTO.setIdDetail(new Long(1));
             petDTO.setEncoded("");
-            petDTO.setUrlLink("");
+            //petDTO.setUrlLink("");
             petDTO.setEncoded("");
 
         String username = "jimmy.cabello";
