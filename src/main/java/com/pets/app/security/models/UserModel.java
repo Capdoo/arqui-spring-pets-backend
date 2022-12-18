@@ -2,6 +2,7 @@ package com.pets.app.security.models;
 
 import com.pets.app.modules.owners.OwnerModel;
 import com.pets.app.modules.shelters.ShelterModel;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -32,6 +33,7 @@ public class UserModel {
 
 	@Lob
 	@Column(name="image")
+	@Type(type = "org.hibernate.type.BinaryType")
 	private byte[] image;
 
 	@Column(name="token_password")

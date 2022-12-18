@@ -5,6 +5,7 @@ import com.pets.app.modules.details.DetailModel;
 import com.pets.app.modules.owners.OwnerModel;
 import com.pets.app.modules.searchs.SearchModel;
 import com.pets.app.modules.shelters.ShelterModel;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
@@ -29,6 +30,7 @@ public class PetModel {
 
 	@Lob
 	@Column(name="image")
+	@Type(type = "org.hibernate.type.BinaryType")
 	private byte[] image;
 
 	@ManyToOne
