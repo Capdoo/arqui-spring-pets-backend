@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-
 @RestController
 @RequestMapping("/details")
 public class DetailsController {
@@ -33,11 +32,9 @@ public class DetailsController {
 		}
 	}
 
-
 	@PreAuthorize("hasRole('ROLE_USER')")
 	@GetMapping("/read/species")
 	public ResponseEntity<Object> readSpecies(){
-		
 		try {
 			List<StringDTO> listaEspecies = detailService.getAllSpecies();
 			return new ResponseEntity<Object>(listaEspecies, HttpStatus.OK);
@@ -45,13 +42,11 @@ public class DetailsController {
 		} catch (Exception e) {
 			return new ResponseEntity<Object>(new MensajeDTO("Hubo un problema"), HttpStatus.BAD_REQUEST);
 		}
-		
 	}
 
 	@PreAuthorize("hasRole('ROLE_USER')")
 	@GetMapping("/read/breed")
 	public ResponseEntity<Object> readBreedsBySpecies(@RequestParam("species") String especie){
-		
 		try {
 			List<StringDTO> listaRazas = detailService.getBreedsBySpecies(especie);
 			return new ResponseEntity<Object>(listaRazas, HttpStatus.OK);
@@ -59,10 +54,7 @@ public class DetailsController {
 		} catch (Exception e) {
 			return new ResponseEntity<Object>(new MensajeDTO("Hubo un problema"), HttpStatus.BAD_REQUEST);
 		}
-		
 	}
-	
-	
 }
 
 
