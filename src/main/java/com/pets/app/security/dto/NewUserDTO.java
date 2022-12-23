@@ -10,16 +10,12 @@ public class NewUserDTO {
 	private String dni;
 	private String address;
 	private String phone;
-	private String name;
 	private String username;
 	private String email;
 	private String password;
-	//img
 	//Para imagen
 	private String encoded;
-	private String urlLink;
 	private Set<String> roles = new HashSet<>();
-
 
 	public String getFirstName() {
 		return firstName;
@@ -61,14 +57,6 @@ public class NewUserDTO {
 		this.phone = phone;
 	}
 
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
 	public String getUsername() {
 		return username;
 	}
@@ -99,14 +87,6 @@ public class NewUserDTO {
 
 	public void setEncoded(String encoded) {
 		this.encoded = encoded;
-	}
-
-	public String getUrlLink() {
-		return urlLink;
-	}
-
-	public void setUrlLink(String urlLink) {
-		this.urlLink = urlLink;
 	}
 
 	public Set<String> getRoles() {

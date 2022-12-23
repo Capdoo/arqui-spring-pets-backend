@@ -32,7 +32,7 @@ public class UserModel {
 	private String password;
 
 	@Lob
-	@Column(name="image")
+	@Column(length = 16777215)
 	@Type(type = "org.hibernate.type.BinaryType")
 	private byte[] image;
 

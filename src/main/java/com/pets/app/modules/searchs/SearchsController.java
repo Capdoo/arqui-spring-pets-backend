@@ -10,7 +10,6 @@ import springfox.documentation.annotations.ApiIgnore;
 
 import java.util.List;
 
-
 @RestController
 @RequestMapping("/searchs")
 public class SearchsController {
@@ -22,7 +21,7 @@ public class SearchsController {
 	@PostMapping("/create")
 	public ResponseEntity<Object> createSearch(@RequestBody SearchDTO searchDTO){
 		try {
-			searchService.saveSearch(searchDTO);
+			SearchModel searchModel = searchService.saveSearch(searchDTO);
 			return new ResponseEntity<Object>(new MensajeDTO("Search registered successfully"), HttpStatus.OK);
 		} catch (Exception e) {
 			return new ResponseEntity<Object>(new MensajeDTO("There has been a problem"), HttpStatus.BAD_REQUEST);

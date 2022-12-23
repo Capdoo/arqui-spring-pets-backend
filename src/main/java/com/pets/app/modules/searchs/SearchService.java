@@ -23,9 +23,9 @@ public class SearchService {
 	@Autowired
 	FileUploadService fileUploadService;
 
-	public void saveSearch(SearchDTO searchDTO) throws IOException {
+	public SearchModel saveSearch(SearchDTO searchDTO) throws IOException {
 		FechaUtil fechaUtil = new FechaUtil();
-		PetModel selectedPet = petRepository.findById(searchDTO.getPetId()).get();
+		PetModel selectedPet = petRepository.findById(searchDTO.getPet_id()).get();
 		SearchModel newSearch = new SearchModel();
 			newSearch.setAddress(searchDTO.getAddress());
 			newSearch.setDistrict(searchDTO.getDistrict());
@@ -36,11 +36,14 @@ public class SearchService {
 			newSearch.setPhoneA(searchDTO.getPhoneA());
 			newSearch.setPhoneB(searchDTO.getPhoneB());
 			newSearch.setMessage(searchDTO.getMessage());
+
+			//Image
 			String encoded = fileUploadService.obtenerEncoded(searchDTO.getEncoded());
 			byte[] image = fileUploadService.convertStringToBytes(encoded);
-			String url = fileUploadService.fileUpload(image);
-			newSearch.setLinkImg(url);
-		searchRepository.save(newSearch);
+			newSearch.setImage(image);
+
+		SearchModel searchModel = searchRepository.save(newSearch);
+		return searchModel;
 	}
 	
 	//Get All
@@ -58,7 +61,7 @@ public class SearchService {
 					busquedaSingle.setLostDate(fechaPerdida);
 					String fechaRegistro = fechaUtil.convertirFecha(p.getRegisterDate());
 					busquedaSingle.setRegisterDate(fechaRegistro);
-				busquedaSingle.setPetId(p.getPet().getId());
+				busquedaSingle.setPet_id(p.getPet().getId());
 				busquedaSingle.setPhoneA(p.getPhoneA());
 				busquedaSingle.setPhoneB(p.getPhoneB());
 				busquedaSingle.setMessage(p.getMessage());
@@ -66,7 +69,7 @@ public class SearchService {
 				busquedaSingle.setNamePet(p.getPet().getName());
 				busquedaSingle.setSpeciesPet(p.getPet().getDetail().getSpecies());
 				busquedaSingle.setBreedPet(p.getPet().getDetail().getBreed());
-				busquedaSingle.setUrlLink(p.getLinkImg());
+				busquedaSingle.setEncoded(fileUploadService.convertBytesToString(p.getImage()));
 			listSend.add(busquedaSingle);
 		}
 		return listSend;
@@ -87,11 +90,11 @@ public class SearchService {
 				singleSearch.setLostDate(dateLoss);
 				String dateRegistration = fechaUtil.convertirFecha(p.getRegisterDate());
 				singleSearch.setRegisterDate(dateRegistration);
-				singleSearch.setPetId(p.getPet().getId());
+				singleSearch.setPet_id(p.getPet().getId());
 				singleSearch.setPhoneA(p.getPhoneA());
 				singleSearch.setPhoneB(p.getPhoneB());
 				singleSearch.setMessage(p.getMessage());
-				singleSearch.setUrlLink(p.getLinkImg());
+				singleSearch.setEncoded(fileUploadService.convertBytesToString(p.getImage()));
 			sendList.add(singleSearch);
 		}
 		return sendList;
@@ -109,11 +112,11 @@ public class SearchService {
 			searchSingle.setLostDate(dateLoss);
 			String dateRegistration = fechaUtil.convertirFecha(p.getRegisterDate());
 			searchSingle.setRegisterDate(dateRegistration);
-			searchSingle.setPetId(p.getPet().getId());
+			searchSingle.setPet_id(p.getPet().getId());
 			searchSingle.setPhoneA(p.getPhoneA());
 			searchSingle.setPhoneB(p.getPhoneB());
 			searchSingle.setMessage(p.getMessage());
-			searchSingle.setUrlLink(p.getLinkImg());
+			searchSingle.setEncoded(fileUploadService.convertBytesToString(p.getImage()));
 		return searchSingle;
 	}
 }

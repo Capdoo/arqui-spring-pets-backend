@@ -66,18 +66,21 @@ public class AuthController {
 			usuarioModel.setUsername(newUserDTO.getUsername());
 			usuarioModel.setPassword(passwordEncoder.encode(newUserDTO.getPassword()));
 			usuarioModel.setPhone(newUserDTO.getPhone());
-		Set<RoleModel> roles = new HashSet<>();
-		roles.add(roleService.getByRoleName(RoleName.ROLE_USER).get());
-		if (newUserDTO.getRoles().contains("admin")) {
-			roles.add(roleService.getByRoleName(RoleName.ROLE_ADMIN).get());
-		}
-		if (newUserDTO.getRoles().contains("rept")) {
-			roles.add(roleService.getByRoleName(RoleName.ROLE_REPT).get());
-		}
-		String encoded = fileUploadService.obtenerEncoded(newUserDTO.getEncoded());
-		byte[] imagen = fileUploadService.convertStringToBytes(encoded);
-		usuarioModel.setImage(imagen);
-		usuarioModel.setRoles(roles);
+			Set<RoleModel> roles = new HashSet<>();
+			roles.add(roleService.getByRoleName(RoleName.ROLE_USER).get());
+			if (newUserDTO.getRoles().contains("admin")) {
+				roles.add(roleService.getByRoleName(RoleName.ROLE_ADMIN).get());
+			}
+			if (newUserDTO.getRoles().contains("rept")) {
+				roles.add(roleService.getByRoleName(RoleName.ROLE_REPT).get());
+			}
+			usuarioModel.setRoles(roles);
+
+			String encoded = fileUploadService.obtenerEncoded(newUserDTO.getEncoded());
+			System.out.println(encoded);
+			byte[] imagen = fileUploadService.convertStringToBytes(encoded);
+			usuarioModel.setImage(imagen);
+
 		userService.save(usuarioModel);
 		return new ResponseEntity(new MensajeDTO("User registered successfully"), HttpStatus.CREATED);
 	}

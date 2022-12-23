@@ -29,7 +29,7 @@ public class PetModel {
 	//link de imagen
 
 	@Lob
-	@Column(name="image")
+	@Column(length = 16777215)
 	@Type(type = "org.hibernate.type.BinaryType")
 	private byte[] image;
 
