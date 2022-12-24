@@ -88,8 +88,8 @@ public class UserService {
 
 		return userRepository.existsByUsernameOrEmail(usernameOrEmail, usernameOrEmail);
 	}
-	public void save(UserModel usuarioModel) {
-		userRepository.save(usuarioModel);
+	public UserModel save(UserModel usuarioModel) {
+		return userRepository.save(usuarioModel);
 	}
 
 	public UserDTO getById(long id){

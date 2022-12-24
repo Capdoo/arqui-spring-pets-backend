@@ -2,6 +2,9 @@ package com.pets.app.security.controllers;
 
 import com.pets.app.dto.MensajeDTO;
 import com.pets.app.files.FileUploadService;
+import com.pets.app.modules.owners.OwnerDTO;
+import com.pets.app.modules.owners.OwnerModel;
+import com.pets.app.modules.owners.OwnerService;
 import com.pets.app.security.dto.JwtDTO;
 import com.pets.app.security.dto.LoginUserDTO;
 import com.pets.app.security.dto.NewUserDTO;
@@ -44,6 +47,9 @@ public class AuthController {
 	JwtProvider jwtProvider;
 	@Autowired
 	FileUploadService fileUploadService;
+
+	@Autowired
+	OwnerService ownerService;
 	
 	@PostMapping("/register")
 	public ResponseEntity<Object> nuevo(@RequestBody NewUserDTO newUserDTO, BindingResult bindingResult) throws IOException{
@@ -81,7 +87,13 @@ public class AuthController {
 			byte[] imagen = fileUploadService.convertStringToBytes(encoded);
 			usuarioModel.setImage(imagen);
 
-		userService.save(usuarioModel);
+		UserModel newUser =  userService.save(usuarioModel);
+
+		//save owner
+		OwnerDTO ownerDTO = new OwnerDTO(
+				0
+		);
+		OwnerModel ownerModel = ownerService.saveOwner(ownerDTO, newUser.getUsername());
 		return new ResponseEntity(new MensajeDTO("User registered successfully"), HttpStatus.CREATED);
 	}
 	@PostMapping("/login")

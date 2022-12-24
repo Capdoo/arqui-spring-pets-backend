@@ -36,9 +36,14 @@ public class PetModel {
 	@ManyToOne
 	@JoinColumn(name="owner_id",referencedColumnName = "id", nullable=true)
 	private OwnerModel owner;
-	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "detail_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "PET_FK_DETAIL"))
+//	@OneToOne(cascade = CascadeType.ALL)
+//	@JoinColumn(name = "detail_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "PET_FK_DETAIL"))
+//	private DetailModel detail;
+	@ManyToOne
+	@JoinColumn(name="detail_id", referencedColumnName = "id", nullable = true)
 	private DetailModel detail;
+
+
 	//For searchs
 	@OneToMany(mappedBy="pet")
 	private Set<SearchModel> searchs;

@@ -12,6 +12,9 @@ public class OwnerDTO {
 		super();
 	}
 
+	public OwnerDTO(int numberOfPets) {
+		this.numberOfPets = numberOfPets;
+	}
 
 	public long getId() {
 		return id;
