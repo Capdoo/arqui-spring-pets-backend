@@ -2,7 +2,7 @@
 
 Proyecto backend para el Sistema Mascotas Perdidas
 
-## Despliegue
+## Despliegue.
 
 * [Mascotas Deploy Swagger](https://arqui-spring-pets-backend.herokuapp.com/swagger-ui/index.html)
 
