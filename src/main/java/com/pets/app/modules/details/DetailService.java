@@ -12,74 +12,55 @@ public class DetailService {
 
 	@Autowired
     DetailRepository detailRepository;
-	
-	//No existe registrar, son datos fijos
-	
-	//Obtener todos
-	public List<DetailDTO> listAll(){
-		List<DetailDTO> listaDetalles = new ArrayList<>();
-		List<DetailModel> detallesBD = detailRepository.findAll();
-		
 
-		for(DetailModel p : detallesBD) {
+	public List<DetailDTO> listAll(){
+		List<DetailDTO> listDetails = new ArrayList<>();
+		List<DetailModel> detailsBD = detailRepository.findAll();
+		for(DetailModel p : detailsBD) {
 			//Single
-			DetailDTO detalleSingle = new DetailDTO();
-				detalleSingle.setId(p.getId());
-				detalleSingle.setSpecies(p.getSpecies());
-				detalleSingle.setBreed(p.getBreed());
-			
-			listaDetalles.add(detalleSingle);
+			DetailDTO detailsSingle = new DetailDTO();
+			detailsSingle.setId(p.getId());
+			detailsSingle.setSpecies(p.getSpecies());
+				detailsSingle.setBreed(p.getBreed());
+			listDetails.add(detailsSingle);
 		}
-		
-		return listaDetalles;
+		return listDetails;
 	}
 	
 	public List<StringDTO> getAllSpecies(){
-		List<StringDTO> listaEspecies = new ArrayList<>();
-		List<DetailModel> detallesBD = detailRepository.findAll();
-		
-		
-		for(DetailModel p : detallesBD) {
+		List<StringDTO> listSpecies = new ArrayList<>();
+		List<DetailModel> detailsBD = detailRepository.findAll();
+		for(DetailModel p : detailsBD) {
 			StringDTO stringDTOSingle = new StringDTO();
-			
-			if(!(existsSpeciesInList(listaEspecies, p.getSpecies()))) {
+			if(!(existsSpeciesInList(listSpecies, p.getSpecies()))) {
 				stringDTOSingle.setData(p.getSpecies());
-				
-				listaEspecies.add(stringDTOSingle);
+				listSpecies.add(stringDTOSingle);
 			}
 		}
-		
-		return listaEspecies;
+		return listSpecies;
 	}
 	
-	public boolean existsSpeciesInList(List<StringDTO> listaEspecies, String especie) {
-
+	public boolean existsSpeciesInList(List<StringDTO> listSpecies, String species) {
 		boolean res = false;
-		
-		for(StringDTO p : listaEspecies) {
-			if(especie.equals(p.getData().toString())) {
+		for(StringDTO p : listSpecies) {
+			if(species.equals(p.getData().toString())) {
 				res = true;
 			}
 		}
 		return res;
 	}
 	
-	//Obtener Razas Por Especie
+	//Get Breeds By Species
 	public List<StringDTO> getBreedsBySpecies(String especie){
-		List<StringDTO> listaRazas = new ArrayList<>();
-
-		List<DetailModel> detallesBD = detailRepository.findAllBySpecies(especie);
-		
-		for(DetailModel p : detallesBD) {
+		List<StringDTO> listBreeds = new ArrayList<>();
+		List<DetailModel> detailsBD = detailRepository.findAllBySpecies(especie);
+		for(DetailModel p : detailsBD) {
 			StringDTO stringSingle = new StringDTO();
 				stringSingle.setData(p.getBreed());
-			listaRazas.add(stringSingle);
+			listBreeds.add(stringSingle);
 		}
-		
-		return listaRazas;
+		return listBreeds;
 	}
-	
-	
 }
 
 

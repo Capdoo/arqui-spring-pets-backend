@@ -1,10 +1,12 @@
 package com.pets.app.modules.owners;
 
 import com.pets.app.dto.MensajeDTO;
+import com.pets.app.security.jwt.JwtProvider;
 import com.pets.app.security.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,13 +17,16 @@ public class OwnerControllers {
 
 	@Autowired
     OwnerService ownerService;
-	
 	@Autowired
 	UserService userService;
-	
+	@Autowired
+	JwtProvider jwtProvider;
+
+	@PreAuthorize("hasRole('ROLE_USER')")
 	@PostMapping("/create")
-	public ResponseEntity<Object> createOwner(@RequestBody OwnerDTO ownerDTO){
-		
+	public ResponseEntity<Object> createOwner(@RequestBody OwnerDTO ownerDTO, @RequestHeader("Authorization") String token){
+		String realToken = token.split(" ")[1];
+		String username = jwtProvider.getNombreUsuarioFromToken(realToken);
 		try {
 			if(!(userService.existsPorId((int) ownerDTO.getUser_id()))){
 				int b = 11;
@@ -34,8 +39,8 @@ public class OwnerControllers {
 			}
 
 			int c = 12;
-			
-			ownerService.saveOwner(ownerDTO);
+
+			OwnerModel ownerModel = ownerService.saveOwner(ownerDTO, username);
 			return new ResponseEntity<Object>(new MensajeDTO("Registered successfully"), HttpStatus.OK);
 
 		} catch (Exception e) {
@@ -43,13 +48,14 @@ public class OwnerControllers {
 		}
 		
 	}
-	
+
+	@PreAuthorize("hasRole('ROLE_USER')")
 	@GetMapping("/read")
-	public ResponseEntity<Object> obtener(){
+	public ResponseEntity<Object> get(){
 		
 		try {
-			List<OwnerDTO> listaDuenos = ownerService.listAll();
-			return new ResponseEntity<Object>(listaDuenos, HttpStatus.OK);
+			List<OwnerDTO> listsOwner = ownerService.listAll();
+			return new ResponseEntity<Object>(listsOwner, HttpStatus.OK);
 
 		} catch (Exception e) {
 			return new ResponseEntity<Object>(new MensajeDTO("There has been a problem"), HttpStatus.BAD_REQUEST);

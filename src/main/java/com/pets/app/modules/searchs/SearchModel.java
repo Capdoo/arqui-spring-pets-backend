@@ -1,6 +1,7 @@
 package com.pets.app.modules.searchs;
 
 import com.pets.app.modules.pets.PetModel;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
@@ -12,7 +13,6 @@ public class SearchModel {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
-	
 	private String address;
 	private String district;
 	private Timestamp registerDate;
@@ -20,9 +20,10 @@ public class SearchModel {
 	private String phoneA;
 	private String phoneB;
 	private String message;
-	
-	private String linkImg;
-	
+	@Lob
+	@Column(length = 16777215)
+	@Type(type = "org.hibernate.type.BinaryType")
+	private byte[] image;
 	@ManyToOne
 	@JoinColumn(name="pet_id",referencedColumnName = "id", nullable=false)
 	private PetModel pet;
@@ -30,7 +31,7 @@ public class SearchModel {
 	public SearchModel() {
 	}
 
-	public SearchModel(long id, String address, String district, Timestamp registerDate, Timestamp lostDate, String phoneA, String phoneB, String message, String linkImg, PetModel pet) {
+	public SearchModel(long id, String address, String district, Timestamp registerDate, Timestamp lostDate, String phoneA, String phoneB, String message, byte[] image, PetModel pet) {
 		this.id = id;
 		this.address = address;
 		this.district = district;
@@ -39,7 +40,7 @@ public class SearchModel {
 		this.phoneA = phoneA;
 		this.phoneB = phoneB;
 		this.message = message;
-		this.linkImg = linkImg;
+		this.image = image;
 		this.pet = pet;
 	}
 
@@ -107,12 +108,12 @@ public class SearchModel {
 		this.message = message;
 	}
 
-	public String getLinkImg() {
-		return linkImg;
+	public byte[] getImage() {
+		return image;
 	}
 
-	public void setLinkImg(String linkImg) {
-		this.linkImg = linkImg;
+	public void setImage(byte[] image) {
+		this.image = image;
 	}
 
 	public PetModel getPet() {

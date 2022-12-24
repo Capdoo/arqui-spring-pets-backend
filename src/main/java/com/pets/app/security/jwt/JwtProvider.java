@@ -1,6 +1,10 @@
 package com.pets.app.security.jwt;
 
 
+import com.nimbusds.jwt.JWT;
+import com.nimbusds.jwt.JWTClaimsSet;
+import com.nimbusds.jwt.JWTParser;
+import com.pets.app.security.dto.JwtDTO;
 import com.pets.app.security.models.UsuarioPrincipalModel;
 import com.pets.app.security.services.UserService;
 import io.jsonwebtoken.*;
@@ -12,6 +16,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Component;
 
+import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -21,14 +26,11 @@ import java.util.stream.Collectors;
 @Component
 public class JwtProvider {
 
-	private final static Logger logger = LoggerFactory.getLogger(JwtProvider.class); 
-
+	private final static Logger logger = LoggerFactory.getLogger(JwtProvider.class);
 	@Value("${jwt.secret}")
 	private String secret;
-
 	@Value("${jwt.expiration}")
 	private int expiration;
-	
 	@Autowired
 	UserService userService;
 	
@@ -44,7 +46,7 @@ public class JwtProvider {
 				.setSubject(usuarioPrincipal.getUsername())
 				.claim("roles", roles)
 				.setIssuedAt(new Date())
-				.setExpiration(new Date(new Date().getTime() + expiration*1000))
+				.setExpiration(new Date(new Date().getTime() + expiration))
 				.signWith(SignatureAlgorithm.HS512, secret.getBytes())
 				.compact();
 	}
@@ -78,8 +80,20 @@ public class JwtProvider {
 		}
 		return false;
 	}
-	
-	
+	public String refreshToken(JwtDTO jwtDTO) throws ParseException {
+		JWT jwt = JWTParser.parse(jwtDTO.getToken());
+		JWTClaimsSet claims = jwt.getJWTClaimsSet();
+		String nombreUsuario = claims.getSubject();
+		List<String> roles = (List<String>) claims.getClaim("roles");
+
+		return Jwts.builder()
+				.setSubject(nombreUsuario)
+				.claim("roles", roles)
+				.setIssuedAt(new Date())
+				.setExpiration(new Date(new Date().getTime() + expiration))
+				.signWith(SignatureAlgorithm.HS512, secret.getBytes())
+				.compact();
+	}
 }
 
 

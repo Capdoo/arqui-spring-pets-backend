@@ -2,9 +2,12 @@ package com.pets.app.security.controllers;
 
 import com.pets.app.dto.MensajeDTO;
 import com.pets.app.files.FileUploadService;
+import com.pets.app.modules.owners.OwnerDTO;
+import com.pets.app.modules.owners.OwnerModel;
+import com.pets.app.modules.owners.OwnerService;
 import com.pets.app.security.dto.JwtDTO;
-import com.pets.app.security.dto.LoginUsuarioDTO;
-import com.pets.app.security.dto.NuevoUsuarioDTO;
+import com.pets.app.security.dto.LoginUserDTO;
+import com.pets.app.security.dto.NewUserDTO;
 import com.pets.app.security.enums.RoleName;
 import com.pets.app.security.jwt.JwtProvider;
 import com.pets.app.security.models.RoleModel;
@@ -23,6 +26,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -43,85 +47,86 @@ public class AuthController {
 	JwtProvider jwtProvider;
 	@Autowired
 	FileUploadService fileUploadService;
+
+	@Autowired
+	OwnerService ownerService;
 	
 	@PostMapping("/register")
-	public ResponseEntity<Object> nuevo(@RequestBody NuevoUsuarioDTO nuevoUsuarioDTO, BindingResult bindingResult) throws IOException{
+	public ResponseEntity<Object> nuevo(@RequestBody NewUserDTO newUserDTO, BindingResult bindingResult) throws IOException{
 		if (bindingResult.hasErrors()) {
 			return new ResponseEntity(new MensajeDTO("Wrong fields"), HttpStatus.BAD_REQUEST);
 		}
-		
-		if (userService.existsByNombreUsuario(nuevoUsuarioDTO.getNombreUsuario())) {
+		if (userService.existsByNombreUsuario(newUserDTO.getUsername())) {
 			return new ResponseEntity(new MensajeDTO("Username already in use"), HttpStatus.BAD_REQUEST);
-	
 		}
-		if (userService.existsByEmail(nuevoUsuarioDTO.getEmail())) {
+		if (userService.existsByEmail(newUserDTO.getEmail())) {
 			return new ResponseEntity(new MensajeDTO("Email already in use"), HttpStatus.BAD_REQUEST);
-	
 		}
-
 		UserModel usuarioModel = new UserModel();
-			usuarioModel.setLastName(nuevoUsuarioDTO.getApellidoPaterno());
-			usuarioModel.setSurName(nuevoUsuarioDTO.getApellidoMaterno());
-			usuarioModel.setFirstName(nuevoUsuarioDTO.getNombre());
-			usuarioModel.setAddress(nuevoUsuarioDTO.getDireccion());
-			usuarioModel.setDni(nuevoUsuarioDTO.getDni());
-			usuarioModel.setEmail(nuevoUsuarioDTO.getEmail());
-			usuarioModel.setUsername(nuevoUsuarioDTO.getNombreUsuario());
-			usuarioModel.setPassword(passwordEncoder.encode(nuevoUsuarioDTO.getPassword()));
-			usuarioModel.setPhone(nuevoUsuarioDTO.getTelefono());
+			usuarioModel.setLastName(newUserDTO.getLastName());
+			usuarioModel.setSurName(newUserDTO.getSurName());
+			usuarioModel.setFirstName(newUserDTO.getFirstName());
+			usuarioModel.setAddress(newUserDTO.getAddress());
+			usuarioModel.setDni(newUserDTO.getDni());
+			usuarioModel.setEmail(newUserDTO.getEmail());
+			usuarioModel.setUsername(newUserDTO.getUsername());
+			usuarioModel.setPassword(passwordEncoder.encode(newUserDTO.getPassword()));
+			usuarioModel.setPhone(newUserDTO.getPhone());
+			Set<RoleModel> roles = new HashSet<>();
+			roles.add(roleService.getByRoleName(RoleName.ROLE_USER).get());
+			if (newUserDTO.getRoles().contains("admin")) {
+				roles.add(roleService.getByRoleName(RoleName.ROLE_ADMIN).get());
+			}
+			if (newUserDTO.getRoles().contains("rept")) {
+				roles.add(roleService.getByRoleName(RoleName.ROLE_REPT).get());
+			}
+			usuarioModel.setRoles(roles);
 
-		Set<RoleModel> roles = new HashSet<>();
-		roles.add(roleService.getByRoleName(RoleName.ROLE_USER).get());
-		if (nuevoUsuarioDTO.getRoles().contains("admin")) {
-			roles.add(roleService.getByRoleName(RoleName.ROLE_ADMIN).get());
-		}
-		
-		if (nuevoUsuarioDTO.getRoles().contains("rept")) {
-			roles.add(roleService.getByRoleName(RoleName.ROLE_REPT).get());
-		}
+			String encoded = fileUploadService.obtenerEncoded(newUserDTO.getEncoded());
+			System.out.println(encoded);
+			byte[] imagen = fileUploadService.convertStringToBytes(encoded);
+			usuarioModel.setImage(imagen);
 
-		String encoded = fileUploadService.obtenerEncoded(nuevoUsuarioDTO.getEncoded());
-		byte[] imagen = fileUploadService.convertStringToBytes(encoded);
-		String url = fileUploadService.fileUpload(imagen);
+		UserModel newUser =  userService.save(usuarioModel);
 
-		usuarioModel.setLinkImg(url);
-
-		usuarioModel.setRoles(roles);
-		userService.save(usuarioModel);
-		
+		//save owner
+		OwnerDTO ownerDTO = new OwnerDTO(
+				0
+		);
+		OwnerModel ownerModel = ownerService.saveOwner(ownerDTO, newUser.getUsername());
 		return new ResponseEntity(new MensajeDTO("User registered successfully"), HttpStatus.CREATED);
-		
 	}
-	
 	@PostMapping("/login")
-	public ResponseEntity<Object> login(@RequestBody LoginUsuarioDTO loginUsuarioDTO, BindingResult bindingResult){
+	public ResponseEntity<Object> login(@RequestBody LoginUserDTO loginUserDTO, BindingResult bindingResult){
 		if (bindingResult.hasErrors()) {
 			return new ResponseEntity(new MensajeDTO("Wrong fields"), HttpStatus.BAD_REQUEST);
 		}
-		
-		if(!(userService.existsByNombreUsuario(loginUsuarioDTO.getNombreUsuario()))) {
+		if(!(userService.existsByUsernameOrEmail(loginUserDTO.getUsername()))) {
 			return new ResponseEntity(new MensajeDTO("Wrong fields"), HttpStatus.BAD_REQUEST);
 		}
-		
-        return Autenticacion(loginUsuarioDTO.getNombreUsuario(), loginUsuarioDTO.getPassword());
-		
+        return Autenticacion(loginUserDTO.getUsername(), loginUserDTO.getPassword());
 	}
-	
 	public ResponseEntity<Object> Autenticacion(String username, String password) {
-		
 		try {
 			Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
 	        SecurityContextHolder.getContext().setAuthentication(authentication);
 	        String jwt = jwtProvider.generateToken(authentication);
 	        JwtDTO jwtDto = new JwtDTO(jwt);
 	        return new ResponseEntity(jwtDto, HttpStatus.OK);
-			
 		} catch (Exception e) {
 			return new ResponseEntity(new MensajeDTO("Wrong fields"), HttpStatus.BAD_REQUEST);
 		}
-
 	}
-	
+	@PostMapping("/refresh")
+	public ResponseEntity<Object> refreshToken(@RequestBody JwtDTO jwtDTO) throws ParseException {
+		try {
+			String token = jwtProvider.refreshToken(jwtDTO);
+			JwtDTO jwt = new JwtDTO(token);
+			return new ResponseEntity<Object>(jwt, HttpStatus.OK);
+		}catch (Exception e){
+			return new ResponseEntity<Object>(new MensajeDTO(e.getMessage()), HttpStatus.OK);
+		}
+	}
 }
 
 

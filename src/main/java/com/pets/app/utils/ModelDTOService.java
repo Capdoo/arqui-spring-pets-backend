@@ -1,11 +1,16 @@
 package com.pets.app.utils;
 
+import com.pets.app.files.FileUploadService;
 import com.pets.app.security.dto.UserDTO;
 import com.pets.app.security.models.UserModel;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class ModelDTOService {
+
+    @Autowired
+    FileUploadService fileUploadService;
 
     public UserDTO getUserDTOfromModel(UserModel p){
 
@@ -21,7 +26,8 @@ public class ModelDTOService {
             usuarioSingle.setEmail(p.getEmail());
             usuarioSingle.setUsername(p.getUsername());
             usuarioSingle.setPhone(p.getPhone());
-            usuarioSingle.setUrlLink(p.getLinkImg());
+            usuarioSingle.setEncoded(fileUploadService.convertBytesToString(p.getImage()));
+
 
         return usuarioSingle;
     }

@@ -5,6 +5,8 @@ import com.pets.app.modules.details.DetailModel;
 import com.pets.app.modules.details.DetailRepository;
 import com.pets.app.modules.owners.OwnerModel;
 import com.pets.app.modules.owners.OwnerRepository;
+import com.pets.app.security.models.UserModel;
+import com.pets.app.security.repositories.UserRepository;
 import com.pets.app.utils.FechaUtil;
 import com.pets.app.utils.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,24 +17,21 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
-
 @Service
 public class PetService {
 
-	
 	@Autowired
     PetRepository petRepository;
-	
 	@Autowired
 	OwnerRepository ownerRepository;
-	
 	@Autowired
 	DetailRepository detailRepository;
-	
 	@Autowired
 	FileUploadService fileUploadService;
+	@Autowired
+	UserRepository userRepository;
 	
-	public void savePet(PetDTO petDTO) throws IOException {
+	public PetModel savePet(PetDTO petDTO, String username) throws IOException {
 
 		FechaUtil fechaUtil = new FechaUtil();
 		PetModel newPet = new PetModel();
@@ -46,76 +45,96 @@ public class PetService {
 		newPet.setCharacteristic(petDTO.getCharacteristic());
 		newPet.setSize(petDTO.getSize());
 
-		OwnerModel ownerPet = ownerRepository.findById(petDTO.getIdOwner()).get();
+		UserModel userModel = userRepository.findByUsername(username).get();
+		OwnerModel ownerPet = ownerRepository.findByUser(userModel).get();
 		newPet.setOwner(ownerPet);
 
-			if(petDTO.getSpecificBreed() == null) {
-				DetailModel petDetail = detailRepository.findBySpeciesAndBreed(
-						petDTO.getSpecies(),
-						petDTO.getBreed()).get();
-				newPet.setDetail(petDetail);
-				newPet.setSpecificBreed(null);
-	
-			}else {
-				newPet.setSpecificBreed(petDTO.getSpecies()+"#"+petDTO.getSpecificBreed());
-				newPet.setDetail(null);
-			}
-
+		DetailModel petDetail = detailRepository.findBySpeciesAndBreed(
+				petDTO.getSpecies(),
+				petDTO.getBreed()).get();
+		newPet.setDetail(petDetail);
 		newPet.setShelter(null);
-		
-				String encoded = fileUploadService.obtenerEncoded(petDTO.getEncoded());
-				byte[] imagen = fileUploadService.convertStringToBytes(encoded);
-				String url = fileUploadService.fileUpload(imagen);
 
-		newPet.setLinkImg(url);
-			
-		petRepository.save(newPet);
+
+		String encoded = fileUploadService.obtenerEncoded(petDTO.getEncoded());
+		byte[] image = fileUploadService.convertStringToBytes(encoded);
+
+		newPet.setImage(image);
+		return petRepository.save(newPet);
 	}
 	
-	//Lista general
+	//List general
 	public List<PetDTO> listAllPets(){
 		List<PetDTO> listPets = new ArrayList<>();
-		List<PetModel> listDB = petRepository.findAll();
-		
-		for(PetModel p : listDB) {
+		List<OwnerModel> listOwnerDb = ownerRepository.findAll();
+		List<Long> listIdPetsByOwner = new ArrayList<>();
+
+		for(OwnerModel p:listOwnerDb){
+			for(PetModel q:p.getPets()){
+				listIdPetsByOwner.add(q.getId());
+			}
+		}
+		List<PetModel> petModelDb = petRepository.findAllById(listIdPetsByOwner);
+
+		for(PetModel p : petModelDb) {
 			FechaUtil fechaUtil = new FechaUtil();
 			StringUtil stringUtil = new StringUtil();
-			PetDTO mascotaSingle = new PetDTO();
+			PetDTO petSingle = new PetDTO();
 
-				mascotaSingle.setId(p.getId());
-			   	mascotaSingle.setName(p.getName());
-				mascotaSingle.setGender(p.getGender());
+				petSingle.setId(p.getId());
+				petSingle.setName(p.getName());
+				petSingle.setGender(p.getGender());
 				
-		   			String fechaNacimiento = fechaUtil.convertirFecha(p.getBirthDate());
-		   			mascotaSingle.setBirthDate(fechaNacimiento);
-				
-			   		String fechaRegistro = fechaUtil.convertirFecha(p.getBirthDate());
-					mascotaSingle.setBirthDate(fechaRegistro);
-					
-				mascotaSingle.setColour(p.getColour());
-				mascotaSingle.setCharacteristic(p.getCharacteristic());
-				mascotaSingle.setSize(p.getSize());
-				mascotaSingle.setIdOwner(p.getOwner().getId());
+				String dateNacimiento = fechaUtil.convertirFecha(p.getBirthDate());
+				petSingle.setBirthDate(dateNacimiento);
 
-				if(p.getSpecificBreed()==null) {
-					mascotaSingle.setSpecies(p.getDetail().getSpecies());
-					mascotaSingle.setBreed(p.getDetail().getBreed());
-					mascotaSingle.setSpecificBreed(null);
-					mascotaSingle.setIdDetail(p.getDetail().getId());
-				}else {
-					mascotaSingle.setSpecies(stringUtil.obtenerEspecieToken(p.getSpecificBreed()));
-					mascotaSingle.setBreed(null);
-					mascotaSingle.setSpecificBreed(stringUtil.obtenerRazaToken(p.getSpecificBreed()));
-				}
-				
-				mascotaSingle.setUrlLink(p.getLinkImg());
+				String dateRegistro = fechaUtil.convertirFecha(p.getBirthDate());
+				petSingle.setBirthDate(dateRegistro);
 
-			listPets.add(mascotaSingle);
+				petSingle.setColour(p.getColour());
+				petSingle.setCharacteristic(p.getCharacteristic());
+				petSingle.setSize(p.getSize());
+				petSingle.setIdOwner(p.getOwner().getId());
+
+				petSingle.setSpecies(p.getDetail().getSpecies());
+				petSingle.setBreed(p.getDetail().getBreed());
+				petSingle.setIdDetail(p.getDetail().getId());
+
+				petSingle.setEncoded(fileUploadService.convertBytesToString(p.getImage()));
+
+			listPets.add(petSingle);
 		}
 		
 		return listPets;
 	}
-	
-	//Lista por id de dueño	
- 	
+
+
+
+	//Lista por username
+	public List<PetDTO> getAllByUsername(String username){
+
+		List<PetDTO> listSend = new ArrayList<PetDTO>();
+		UserModel userModel = userRepository.findByUsername(username).get();
+		OwnerModel ownerModel = ownerRepository.findByUser(userModel).get();
+		List<PetModel> petModelList = ownerModel.getPets();
+
+		FechaUtil fechaUtil = new FechaUtil();
+		for(PetModel p:petModelList){
+			PetDTO petDTO = new PetDTO();
+				String birthDate = fechaUtil.convertirFecha(p.getBirthDate());
+				petDTO.setBirthDate(birthDate);
+				petDTO.setCharacteristic(p.getCharacteristic());
+				petDTO.setColour(p.getColour());
+				petDTO.setGender(p.getGender());
+				petDTO.setEncoded(fileUploadService.convertBytesToString(p.getImage()));
+				petDTO.setName(p.getName());
+				String registerDate = fechaUtil.convertirFecha(p.getRegisterDate());
+				petDTO.setRegisterDate(registerDate);
+				petDTO.setSize(p.getSize());
+				petDTO.setIdOwner(p.getOwner().getId());
+				petDTO.setIdDetail(p.getDetail().getId());
+			listSend.add(petDTO);
+		}
+		return listSend;
+	}
 }

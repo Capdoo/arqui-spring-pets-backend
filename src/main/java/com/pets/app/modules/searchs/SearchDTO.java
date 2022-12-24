@@ -1,40 +1,34 @@
 package com.pets.app.modules.searchs;
 
 public class SearchDTO {
-
 	private long id;
 	private String address;
 	private String district;
 	private String phoneA;
 	private String phoneB;
-	private long petId;
-	
+	private long pet_id;
 	private String namePet;
 	private String speciesPet;
 	private String breedPet;
-	
 	//Fecha de usuario
 	private String lostDate;
 	private String registerDate;
-	
 	//Mensaje
 	private String message;
-	
 	//Imagen
 	private String encoded;
-	private String urlLink;
 
 	public SearchDTO() {
 		super();
 	}
 
-	public SearchDTO(long id, String address, String district, String phoneA, String phoneB, long petId, String namePet, String speciesPet, String breedPet, String lostDate, String registerDate, String message, String encoded, String urlLink) {
+	public SearchDTO(long id, String address, String district, String phoneA, String phoneB, long pet_id, String namePet, String speciesPet, String breedPet, String lostDate, String registerDate, String message, String encoded) {
 		this.id = id;
 		this.address = address;
 		this.district = district;
 		this.phoneA = phoneA;
 		this.phoneB = phoneB;
-		this.petId = petId;
+		this.pet_id = pet_id;
 		this.namePet = namePet;
 		this.speciesPet = speciesPet;
 		this.breedPet = breedPet;
@@ -42,7 +36,6 @@ public class SearchDTO {
 		this.registerDate = registerDate;
 		this.message = message;
 		this.encoded = encoded;
-		this.urlLink = urlLink;
 	}
 
 	public long getId() {
@@ -85,12 +78,12 @@ public class SearchDTO {
 		this.phoneB = phoneB;
 	}
 
-	public long getPetId() {
-		return petId;
+	public long getPet_id() {
+		return pet_id;
 	}
 
-	public void setPetId(long petId) {
-		this.petId = petId;
+	public void setPet_id(long pet_id) {
+		this.pet_id = pet_id;
 	}
 
 	public String getNamePet() {
@@ -147,13 +140,5 @@ public class SearchDTO {
 
 	public void setEncoded(String encoded) {
 		this.encoded = encoded;
-	}
-
-	public String getUrlLink() {
-		return urlLink;
-	}
-
-	public void setUrlLink(String urlLink) {
-		this.urlLink = urlLink;
 	}
 }

@@ -1,5 +1,6 @@
 package com.pets.app.security.services;
 
+import com.pets.app.files.FileUploadService;
 import com.pets.app.modules.owners.OwnerRepository;
 import com.pets.app.security.dto.UserDTO;
 import com.pets.app.security.models.UserModel;
@@ -14,20 +15,20 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-//Para implementar rollbacks y evitar incoherencia : Concurrencia
+//To implement rollbacks and avoid inconsistency: Concurrency
 @Transactional
 public class UserService {
 
 	@Autowired
 	UserRepository userRepository;
-	
 	@Autowired
 	OwnerRepository ownerRepository;
-
 	@Autowired
 	ModelDTOService modelDTOService;
+	@Autowired
+	FileUploadService fileUploadService;
 	
-	//Obtener
+	//Get
 	public List<UserDTO> listar(){
 		List<UserDTO> listaEnviar = new ArrayList<>();
 
@@ -46,8 +47,7 @@ public class UserService {
 				usuarioSingle.setUsername(p.getUsername());
 				usuarioSingle.setPhone(p.getPhone());
 				
-				
-				usuarioSingle.setUrlLink(p.getLinkImg());
+				usuarioSingle.setEncoded(fileUploadService.convertBytesToString(p.getImage()));
 				
 			listaEnviar.add(usuarioSingle);
 		}
@@ -62,10 +62,15 @@ public class UserService {
 	}
 	
 	//Seguridad
-	public Optional<UserModel> getByNombreUsuario(String nombreUsuario){
+	public Optional<UserModel> getByUsername(String nombreUsuario){
 		return userRepository.findByUsername(nombreUsuario);
 	}
-	
+	public Optional<UserModel> getByUsernameOrEmail(String usernameOrEmail){
+		return userRepository.findByUsernameOrEmail(usernameOrEmail, usernameOrEmail);
+	}
+	public Optional<UserModel> getByTokenPassword(String tokenPassword){
+		return userRepository.findByTokenPassword(tokenPassword);
+	}
 	public boolean existsByNombreUsuario(String nombreUsuario) {
 		return userRepository.existsByUsername(nombreUsuario);
 	}
@@ -79,9 +84,12 @@ public class UserService {
 	}
 
 	public boolean existsByDni(String dni){ return userRepository.existsByDni(dni);}
+	public boolean existsByUsernameOrEmail(String usernameOrEmail) {
 
-	public void save(UserModel usuarioModel) {
-		userRepository.save(usuarioModel);
+		return userRepository.existsByUsernameOrEmail(usernameOrEmail, usernameOrEmail);
+	}
+	public UserModel save(UserModel usuarioModel) {
+		return userRepository.save(usuarioModel);
 	}
 
 	public UserDTO getById(long id){
@@ -108,22 +116,21 @@ public class UserService {
 
 	}
 
-	public void deleteUser(long id){
+	public UserDTO getUserInfoByUsername(String username){
+		UserModel userModel = userRepository.findByUsername(username).get();
+		return new UserDTO(
+				userModel.getId(),
+				userModel.getFirstName(),
+				userModel.getLastName(),
+				userModel.getSurName(),
+				userModel.getAddress(),
+				userModel.getDni(),
+				userModel.getEmail(),
+				userModel.getPhone(),
+				userModel.getUsername(),
+				fileUploadService.convertBytesToString(userModel.getImage())
+		);
 
-//		//Get the user
-//		UserModel userModel = userRepository.findById(id).get();
-//
-//		//Si es dueno
-//		if(ownerService.existsOwnerByUserId(userModel.getId())){
-//			//Eliminar mascotas
-//		}
-//
-//		//Si es propietario de un o unos refugios, eliminar todos
-//		if(shelterService.existsRefugioByUserId(userModel.getId())){
-//			//
-//		}
-//
-//		userRepository.deleteById(id);
 	}
 	
 }

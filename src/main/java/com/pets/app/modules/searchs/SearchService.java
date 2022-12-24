@@ -18,148 +18,107 @@ public class SearchService {
 	
 	@Autowired
 	SearchRepository searchRepository;
-	
 	@Autowired
 	PetRepository petRepository;
-	
 	@Autowired
 	FileUploadService fileUploadService;
 
-	public void saveSearch(SearchDTO searchDTO) throws IOException {
-		
+	public SearchModel saveSearch(SearchDTO searchDTO) throws IOException {
 		FechaUtil fechaUtil = new FechaUtil();
-		PetModel selectedPet = petRepository.findById(searchDTO.getPetId()).get();
-		
+		PetModel selectedPet = petRepository.findById(searchDTO.getPet_id()).get();
 		SearchModel newSearch = new SearchModel();
 			newSearch.setAddress(searchDTO.getAddress());
 			newSearch.setDistrict(searchDTO.getDistrict());
-		
-				Timestamp fechaPerdida = fechaUtil.obtenerTimeStampDeFecha(searchDTO.getLostDate());
+			Timestamp fechaPerdida = fechaUtil.obtenerTimeStampDeFecha(searchDTO.getLostDate());
 			newSearch.setLostDate(fechaPerdida);
-
 			newSearch.setRegisterDate(new Timestamp(System.currentTimeMillis()));
 			newSearch.setPet(selectedPet);
-
 			newSearch.setPhoneA(searchDTO.getPhoneA());
 			newSearch.setPhoneB(searchDTO.getPhoneB());
-
 			newSearch.setMessage(searchDTO.getMessage());
-			
-				String encoded = fileUploadService.obtenerEncoded(searchDTO.getEncoded());
-				byte[] imagen = fileUploadService.convertStringToBytes(encoded);
-				String url = fileUploadService.fileUpload(imagen);
 
-		newSearch.setLinkImg(url);
-			
-			
-		searchRepository.save(newSearch);
+			//Image
+			String encoded = fileUploadService.obtenerEncoded(searchDTO.getEncoded());
+			byte[] image = fileUploadService.convertStringToBytes(encoded);
+			newSearch.setImage(image);
+
+		SearchModel searchModel = searchRepository.save(newSearch);
+		return searchModel;
 	}
 	
-	//Obtener todos
+	//Get All
 	public List<SearchDTO> listAll(){
 		List<SearchDTO> listSend = new ArrayList<>();
 		List<SearchModel> listDB = searchRepository.findAll();
-
-		
 		for(SearchModel p : listDB) {
 			FechaUtil fechaUtil = new FechaUtil();
 			StringUtil stringUtil = new StringUtil();
 			SearchDTO busquedaSingle = new SearchDTO();
-
 				busquedaSingle.setId(p.getId());
 				busquedaSingle.setAddress(p.getAddress());
 				busquedaSingle.setDistrict(p.getDistrict());
-				
 					String fechaPerdida = fechaUtil.convertirFecha(p.getLostDate());
 					busquedaSingle.setLostDate(fechaPerdida);
-					
 					String fechaRegistro = fechaUtil.convertirFecha(p.getRegisterDate());
 					busquedaSingle.setRegisterDate(fechaRegistro);
-				
-				busquedaSingle.setPetId(p.getPet().getId());
+				busquedaSingle.setPet_id(p.getPet().getId());
 				busquedaSingle.setPhoneA(p.getPhoneA());
 				busquedaSingle.setPhoneB(p.getPhoneB());
 				busquedaSingle.setMessage(p.getMessage());
-				
 				//Nuevo: Nombre y raza (especie)
 				busquedaSingle.setNamePet(p.getPet().getName());
-				if(p.getPet().getDetail() != null) {
-					busquedaSingle.setSpeciesPet(p.getPet().getDetail().getSpecies());
-					busquedaSingle.setBreedPet(p.getPet().getDetail().getBreed());
-				}else {
-					busquedaSingle.setSpeciesPet(stringUtil.obtenerEspecieToken(p.getPet().getSpecificBreed()));
-					busquedaSingle.setBreedPet(stringUtil.obtenerRazaToken(p.getPet().getSpecificBreed()));
-				}
-				
-				busquedaSingle.setUrlLink(p.getLinkImg());
-
+				busquedaSingle.setSpeciesPet(p.getPet().getDetail().getSpecies());
+				busquedaSingle.setBreedPet(p.getPet().getDetail().getBreed());
+				busquedaSingle.setEncoded(fileUploadService.convertBytesToString(p.getImage()));
 			listSend.add(busquedaSingle);
-			
 		}
 		return listSend;
 	}
 	
-	//Obtener por mascota_id
+	//Get pet_id
 	public List<SearchDTO> getSearchByPetId(long petId){
 		List<SearchDTO> sendList = new ArrayList<>();
 		PetModel selectedPet = petRepository.findById(petId).get();
-		
 		List<SearchModel> listDB = searchRepository.findAllByPet(selectedPet);
-		
 		for(SearchModel p : listDB) {
 			SearchDTO singleSearch = new SearchDTO();
 			FechaUtil fechaUtil = new FechaUtil();
-
 				singleSearch.setId(p.getId());
 				singleSearch.setAddress(p.getAddress());
 				singleSearch.setDistrict(p.getDistrict());
-						String fechaPerdida = fechaUtil.convertirFecha(p.getLostDate());
-				singleSearch.setLostDate(fechaPerdida);
-					
-					String fechaRegistro = fechaUtil.convertirFecha(p.getRegisterDate());
-				singleSearch.setRegisterDate(fechaRegistro);
-
-				singleSearch.setPetId(p.getPet().getId());
+				String dateLoss = fechaUtil.convertirFecha(p.getLostDate());
+				singleSearch.setLostDate(dateLoss);
+				String dateRegistration = fechaUtil.convertirFecha(p.getRegisterDate());
+				singleSearch.setRegisterDate(dateRegistration);
+				singleSearch.setPet_id(p.getPet().getId());
 				singleSearch.setPhoneA(p.getPhoneA());
 				singleSearch.setPhoneB(p.getPhoneB());
 				singleSearch.setMessage(p.getMessage());
-
-				singleSearch.setUrlLink(p.getLinkImg());
-
+				singleSearch.setEncoded(fileUploadService.convertBytesToString(p.getImage()));
 			sendList.add(singleSearch);
-			
 		}
 		return sendList;
 	}
 	
-	//Obtener por id
+	//Get id
 	public SearchDTO getSearchById(long id){
-		
 		SearchModel p = searchRepository.findById(id).get();
-		
-		SearchDTO busquedaSingle = new SearchDTO();
+		SearchDTO searchSingle = new SearchDTO();
 			FechaUtil fechaUtil = new FechaUtil();
-
-			busquedaSingle.setId(p.getId());
-			
-			busquedaSingle.setAddress(p.getAddress());
-			busquedaSingle.setDistrict(p.getDistrict());
-				String fechaPerdida = fechaUtil.convertirFecha(p.getLostDate());
-				busquedaSingle.setLostDate(fechaPerdida);
-				
-				String fechaRegistro = fechaUtil.convertirFecha(p.getRegisterDate());
-				busquedaSingle.setRegisterDate(fechaRegistro);
-			busquedaSingle.setPetId(p.getPet().getId());
-			busquedaSingle.setPhoneA(p.getPhoneA());
-			busquedaSingle.setPhoneB(p.getPhoneB());
-			
-			busquedaSingle.setMessage(p.getMessage());
-			
-			busquedaSingle.setUrlLink(p.getLinkImg());
-
-		return busquedaSingle;
+			searchSingle.setId(p.getId());
+			searchSingle.setAddress(p.getAddress());
+			searchSingle.setDistrict(p.getDistrict());
+			String dateLoss = fechaUtil.convertirFecha(p.getLostDate());
+			searchSingle.setLostDate(dateLoss);
+			String dateRegistration = fechaUtil.convertirFecha(p.getRegisterDate());
+			searchSingle.setRegisterDate(dateRegistration);
+			searchSingle.setPet_id(p.getPet().getId());
+			searchSingle.setPhoneA(p.getPhoneA());
+			searchSingle.setPhoneB(p.getPhoneB());
+			searchSingle.setMessage(p.getMessage());
+			searchSingle.setEncoded(fileUploadService.convertBytesToString(p.getImage()));
+		return searchSingle;
 	}
-	
 }
 
 

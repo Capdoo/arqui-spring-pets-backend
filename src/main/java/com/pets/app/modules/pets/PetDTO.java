@@ -1,30 +1,21 @@
 package com.pets.app.modules.pets;
 
 public class PetDTO {
-	
 	private long id;
 	private String name;
 	private String gender;
 	private String birthDate;
 	private String registerDate;
 	private String colour;
-
-
-	private String specificBreed;
 	private String characteristic;
 	private String size;
-	
 	//For detail
 	private String species;
 	private String breed;
-	
 	private long idOwner;
 	private long idDetail;
-
 	//For image
 	private String encoded;
-	private String urlLink;
-
 
 	public long getId() {
 		return id;
@@ -72,14 +63,6 @@ public class PetDTO {
 
 	public void setColour(String colour) {
 		this.colour = colour;
-	}
-
-	public String getSpecificBreed() {
-		return specificBreed;
-	}
-
-	public void setSpecificBreed(String specificBreed) {
-		this.specificBreed = specificBreed;
 	}
 
 	public String getCharacteristic() {
@@ -137,14 +120,4 @@ public class PetDTO {
 	public void setEncoded(String encoded) {
 		this.encoded = encoded;
 	}
-
-	public String getUrlLink() {
-		return urlLink;
-	}
-
-	public void setUrlLink(String urlLink) {
-		this.urlLink = urlLink;
-	}
-
-
 }

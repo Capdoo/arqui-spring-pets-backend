@@ -5,6 +5,7 @@ import com.pets.app.modules.details.DetailModel;
 import com.pets.app.modules.owners.OwnerModel;
 import com.pets.app.modules.searchs.SearchModel;
 import com.pets.app.modules.shelters.ShelterModel;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
@@ -17,62 +18,63 @@ public class PetModel {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
-	
 	private String name;
 	private String gender;
 	private Timestamp birthDate;
 	private Timestamp registerDate;
 	private String colour;
-
 	//Especificado por el usuario
-	private String specificBreed;
 	private String characteristic;
 	private String size;
-	
 	//link de imagen
-	private String linkImg;
+
+	@Lob
+	@Column(length = 16777215)
+	@Type(type = "org.hibernate.type.BinaryType")
+	private byte[] image;
+
+	@ManyToOne
+	@JoinColumn(name="owner_id",referencedColumnName = "id", nullable=true)
+	private OwnerModel owner;
+//	@OneToOne(cascade = CascadeType.ALL)
+//	@JoinColumn(name = "detail_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "PET_FK_DETAIL"))
+//	private DetailModel detail;
+	@ManyToOne
+	@JoinColumn(name="detail_id", referencedColumnName = "id", nullable = true)
+	private DetailModel detail;
+
+
+	//For searchs
+	@OneToMany(mappedBy="pet")
+	private Set<SearchModel> searchs;
+	//For pets
+	@OneToMany(mappedBy="pet")
+	private Set<AdoptionModel> adoptions;
+	//Shelters
+	@ManyToOne
+	@JoinColumn(name="shelter_id",referencedColumnName = "id", nullable=true)
+	private ShelterModel shelter;
 
 	public PetModel() {
 	}
 
-	public PetModel(long id, String name, String gender, Timestamp birthDate, Timestamp registerDate, String colour, String specificBreed, String characteristic, String size, String linkImg, OwnerModel owner, DetailModel detail, Set<SearchModel> searchs, Set<AdoptionModel> adoptions, ShelterModel shelter) {
+	public PetModel(long id, String name, String gender, Timestamp birthDate, Timestamp registerDate, String colour, String characteristic, byte[] image, String linkImg, OwnerModel owner, DetailModel detail, Set<SearchModel> searchs, Set<AdoptionModel> adoptions, ShelterModel shelter) {
 		this.id = id;
 		this.name = name;
 		this.gender = gender;
 		this.birthDate = birthDate;
 		this.registerDate = registerDate;
 		this.colour = colour;
-		this.specificBreed = specificBreed;
+
 		this.characteristic = characteristic;
 		this.size = size;
-		this.linkImg = linkImg;
+		this.image = image;
 		this.owner = owner;
 		this.detail = detail;
 		this.searchs = searchs;
 		this.adoptions = adoptions;
 		this.shelter = shelter;
 	}
-
-	@ManyToOne
-	@JoinColumn(name="owner_id",referencedColumnName = "id", nullable=true)
-	private OwnerModel owner;
-	
-	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "detail_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "PET_FK_DETAIL"))
-	private DetailModel detail;
-	
-	//For searchs
-	@OneToMany(mappedBy="pet")
-	private Set<SearchModel> searchs;
-	
-	//For pets
-	@OneToMany(mappedBy="pet")
-	private Set<AdoptionModel> adoptions;
-	
-	//Shelters
-	@ManyToOne
-	@JoinColumn(name="shelter_id",referencedColumnName = "id", nullable=true)
-	private ShelterModel shelter;
 
 
 	public long getId() {
@@ -123,14 +125,6 @@ public class PetModel {
 		this.colour = colour;
 	}
 
-	public String getSpecificBreed() {
-		return specificBreed;
-	}
-
-	public void setSpecificBreed(String specificBreed) {
-		this.specificBreed = specificBreed;
-	}
-
 	public String getCharacteristic() {
 		return characteristic;
 	}
@@ -147,12 +141,12 @@ public class PetModel {
 		this.size = size;
 	}
 
-	public String getLinkImg() {
-		return linkImg;
+	public byte[] getImage() {
+		return image;
 	}
 
-	public void setLinkImg(String linkImg) {
-		this.linkImg = linkImg;
+	public void setImage(byte[] image) {
+		this.image = image;
 	}
 
 	public OwnerModel getOwner() {
