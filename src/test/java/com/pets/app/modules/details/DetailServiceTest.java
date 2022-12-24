@@ -38,7 +38,7 @@ class DetailServiceTest {
             detailModel.setId(new Long(1));
             detailModel.setSpecies("cat");
             detailModel.setBreed("Siames");
-            detailModel.setPet(new PetModel());
+            detailModel.setPets(null);
 
         Mockito.when(detailRepository.findAll()).thenReturn(Arrays.asList(detailModel));
         Mockito.when(detailRepository.findAllBySpecies(any(String.class))).thenReturn(Arrays.asList(detailModel));
