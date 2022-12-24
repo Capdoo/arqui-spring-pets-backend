@@ -22,11 +22,13 @@ public class OwnerService {
 	@Autowired
 	UserService userService;
 	
-	public OwnerModel saveOwner(OwnerDTO ownerDTO) {
+	public OwnerModel saveOwner(OwnerDTO ownerDTO, String username) {
 		
 		//Getting the User
 		//int user_id = (int) ownerDTO.getUser_id();
-		Optional<UserModel> userObtained = usuarioRepository.findById(ownerDTO.getUser_id());
+		//Optional<UserModel> userObtained = usuarioRepository.findById(ownerDTO.getUser_id());
+		Optional<UserModel> userObtained = usuarioRepository.findByUsername(username);
+
 		System.out.println(ownerDTO.getUser_id());
 		UserModel userModel = userObtained.get();
 		

@@ -113,7 +113,7 @@ class OwnerServiceTest {
         OwnerDTO ownerDTO = new OwnerDTO();
             ownerDTO.setUser_id(new Long(1));
         System.out.println("Durante el test 3");
-        OwnerModel ownerModel1 = ownerService.saveOwner(ownerDTO);
+        OwnerModel ownerModel1 = ownerService.saveOwner(ownerDTO,"");
         assertNotNull(ownerModel1);
 
     }

@@ -18,6 +18,7 @@ public class AdoptionsController {
 	@Autowired
 	AdoptionService adopcionService;
 
+	@ApiIgnore
 	@PreAuthorize("hasRole('ROLE_USER')")
 	@PostMapping("/create")
 	public ResponseEntity<Object> createAdoption(@RequestBody AdoptionDTO adoptionDTO){
@@ -32,6 +33,7 @@ public class AdoptionsController {
 		
 	}
 
+	@ApiIgnore
 	@PreAuthorize("hasRole('ROLE_USER')")
 	@GetMapping("/read")
 	public ResponseEntity<Object> readAdoptions(){
@@ -45,6 +47,7 @@ public class AdoptionsController {
 		}
 	}
 
+	@ApiIgnore
 	@PreAuthorize("hasRole('ROLE_USER')")
 	@GetMapping("/read/pet")
 	public ResponseEntity<Object> obtenerPorMascotaId(@RequestParam long id){
@@ -58,6 +61,7 @@ public class AdoptionsController {
 		}
 	}
 
+	@ApiIgnore
 	@PreAuthorize("hasRole('ROLE_USER')")
 	@GetMapping("/read/single")
 	public ResponseEntity<Object> readByUd(@RequestParam long id){

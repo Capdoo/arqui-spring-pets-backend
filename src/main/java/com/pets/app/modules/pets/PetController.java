@@ -44,6 +44,7 @@ public class PetController {
 			return new ResponseEntity<Object>(listPets, HttpStatus.OK);
 
 		} catch (Exception e) {
+			e.printStackTrace();
 			return new ResponseEntity<Object>(new MensajeDTO("There has been a problem"), HttpStatus.BAD_REQUEST);
 		}
 	}

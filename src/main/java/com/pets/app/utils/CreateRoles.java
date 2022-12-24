@@ -4,6 +4,7 @@ import com.pets.app.modules.details.DetailModel;
 import com.pets.app.modules.details.DetailRepository;
 import com.pets.app.security.enums.RoleName;
 import com.pets.app.security.models.RoleModel;
+import com.pets.app.security.repositories.RoleRepository;
 import com.pets.app.security.services.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -12,21 +13,29 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.List;
 
-//@Component
+@Component
 public class CreateRoles implements CommandLineRunner{
 
 	@Autowired
 	RoleService roleService;
 	@Autowired
 	DetailRepository detailRepository;
+	@Autowired
+	RoleRepository roleRepository;
 	
 	@Override
 	public void run(String... args) throws Exception {
 		
 		RoleModel rolAdmin = new RoleModel(RoleName.ROLE_ADMIN);
 		RoleModel rolUser = new RoleModel(RoleName.ROLE_USER);
-		roleService.save(rolAdmin);
-		roleService.save(rolUser);
+
+		if(!roleRepository.existsByRoleName(RoleName.ROLE_USER)){
+			roleService.save(rolUser);
+		}
+		if(!roleRepository.existsByRoleName(RoleName.ROLE_ADMIN)){
+			roleService.save(rolAdmin);
+		}
+
 
 		String[] listBreedsCats = new String[]{
 				"Abisinio",
@@ -356,13 +365,15 @@ public class CreateRoles implements CommandLineRunner{
 
 		List<DetailModel> listDetails = new ArrayList<>();
 		for(String p:listBreedsCats){
-			listDetails.add(new DetailModel("gato", p));
+			if(!detailRepository.existsBySpeciesAndBreed("gato",p)){
+				listDetails.add(new DetailModel("gato", p));
+			}
 		}
 		for(String q:listBreedsDogs){
-			listDetails.add((new DetailModel("perro", q)));
+			if(!detailRepository.existsBySpeciesAndBreed("perro",q)){
+				listDetails.add(new DetailModel("perro", q));
+			}
 	}
-
 		detailRepository.saveAll(listDetails);
-
 	}
 }

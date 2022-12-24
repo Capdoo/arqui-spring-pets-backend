@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import springfox.documentation.annotations.ApiIgnore;
 
 import java.util.List;
 
@@ -39,6 +40,7 @@ public class UsersController {
         return new ResponseEntity<Object>(userService.getUserInfoByUsername(username), HttpStatus.OK);
     }
 
+    @ApiIgnore
     @PreAuthorize("hasRole('ROLE_USER')")
     @PutMapping("/update")
     public ResponseEntity<Object> updateUser(@RequestParam int id, @RequestBody UserDTO userDTO){
@@ -49,6 +51,7 @@ public class UsersController {
         return new ResponseEntity<Object>(new MensajeDTO("User updated successfully"), HttpStatus.OK);
     }
 
+    @ApiIgnore
     @PreAuthorize("hasRole('ROLE_USER')")
     @DeleteMapping("/delete")
     public ResponseEntity<Object> deleteUser(@RequestParam int id){

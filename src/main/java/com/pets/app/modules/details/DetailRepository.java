@@ -11,5 +11,7 @@ public interface DetailRepository extends JpaRepository<DetailModel, Long>{
 	public List<DetailModel> findAll();
 	public List<DetailModel> findAllBySpecies(String species);
 	public Optional<DetailModel> findBySpeciesAndBreed(String species, String breed);
+
+	boolean existsBySpeciesAndBreed(String species, String breed);
 	
 }
