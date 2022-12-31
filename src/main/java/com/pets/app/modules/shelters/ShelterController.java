@@ -23,7 +23,7 @@ public class ShelterController {
 	@Autowired
 	UserService userService;
 
-	@ApiIgnore
+	//@ApiIgnore
 	@PreAuthorize("hasRole('ROLE_USER')")
 	@PostMapping("/create")
 	public ResponseEntity<Object> createShelter(@RequestBody ShelterDTO shelterDTO){
